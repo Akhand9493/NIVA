@@ -64,6 +64,9 @@
               Peek at a demo first
               <span class="btn-sub">Safe look around — your data stays empty</span>
             </button>
+            <button type="button" class="btn ghost" id="btn-goto-login" onclick="window.showLogin&&window.showLogin();return false;">
+              Already have a profile? Log in
+            </button>
           </div>
         </div>
         <div class="hero-orbit" aria-hidden="true">
@@ -124,6 +127,10 @@
             <p class="form-status login-status" id="login-status" aria-live="polite"></p>
           </form>
           <div class="welcome-actions login-extra">
+            <button type="button" class="btn primary large" id="btn-create-profile" onclick="window.createNewProfile&&window.createNewProfile();return false;">
+              Create new profile
+              <span class="btn-sub" id="create-profile-sub">First time on this browser — set up in about a minute</span>
+            </button>
             <button type="button" class="btn secondary" id="btn-login-demo" onclick="window.openDemo&&window.openDemo();return false;">
               Peek at a demo
               <span class="btn-sub">Sample data only — not your profile</span>

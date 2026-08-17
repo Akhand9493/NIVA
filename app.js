@@ -593,7 +593,7 @@
         ? "This device holds one profile. Set a mobile number and PIN before anyone can open it. Data stays here — not encrypted, not synced."
         : !hasMobile
           ? "Enter a mobile number and your PIN to continue."
-          : "Enter the mobile number and PIN for the profile on this device. One profile per browser.";
+          : "Enter the mobile number and PIN for the profile on this browser. New here? Use Create new profile below.";
     }
     if ($("login-reset-copy")) {
       $("login-reset-copy").textContent = hasMobile
@@ -606,6 +606,12 @@
     if ($("login-reset-panel")) $("login-reset-panel").hidden = true;
     if ($("login-reset-confirm")) $("login-reset-confirm").value = "";
     if ($("login-reset-status")) $("login-reset-status").textContent = "";
+    const createSub = $("create-profile-sub");
+    if (createSub) {
+      createSub.textContent = hasPin
+        ? "Erases the profile on this browser and starts fresh"
+        : "First time on this browser — set up in about a minute";
+    }
     setLoginStatus(message || "");
   }
 
@@ -981,13 +987,7 @@
     }
   }
 
-  function startSetup() {
-    if (state.setupComplete) {
-      showLogin(
-        "This device already has a profile. Log in with that mobile and PIN, or reset the app from login."
-      );
-      return;
-    }
+  function beginSetupWizard() {
     state.setupStep = 1;
     state.setupBudgetsDraft = null;
     showScreen("setup");
@@ -1008,6 +1008,34 @@
     } catch (err) {
       console.error(err);
     }
+  }
+
+  function startSetup() {
+    if (state.setupComplete) {
+      showLogin(
+        "This browser already has a profile. Log in with that mobile and PIN, or create a new profile below."
+      );
+      return;
+    }
+    beginSetupWizard();
+  }
+
+  async function createNewProfile() {
+    if (state.setupComplete) {
+      const ok = confirm(
+        "This browser already has a profile. Creating a new one will erase all payments and settings on this device. Continue?"
+      );
+      if (!ok) return;
+      await wipeAllData();
+      state.settings = { ...DEFAULT_SETTINGS };
+      state.accounts = ["Primary account"];
+      state.openingBalances = {};
+      state.budgets = { ...DEFAULT_BUDGETS };
+      state.transactions = [];
+      state.selected = new Set();
+      state.demoMode = false;
+    }
+    beginSetupWizard();
   }
 
   function openDemo() {
@@ -1977,6 +2005,14 @@
       e.preventDefault();
       openDemo();
     });
+    on("btn-goto-login", "click", (e) => {
+      e.preventDefault();
+      showLogin();
+    });
+    on("btn-create-profile", "click", (e) => {
+      e.preventDefault();
+      createNewProfile();
+    });
     on("login-form", "submit", (e) => {
       e.preventDefault();
       submitLogin(e);
@@ -2532,6 +2568,8 @@
   window.startSetup = startSetup;
   window.openDemo = openDemo;
   window.submitLogin = submitLogin;
+  window.showLogin = showLogin;
+  window.createNewProfile = createNewProfile;
   window.logoutSession = logoutSession;
 
   try {

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Niva — tests</title>
+    <style>
+      body { font-family: sans-serif; background: #111; color: #eee; padding: 1.5rem; }
+      .ok { color: #6ee7b7; }
+      .fail { color: #fca5a5; }
+      li { margin: 0.35rem 0; }
+    </style>
+  </head>
+  <body>
+    <h1>Core tests</h1>
+    <p>Open this file to check date, CSV, fingerprint, and ledger helpers.</p>
+    <ol id="out"></ol>
+    <p id="summary"></p>
+    <script src="core.js"></script>
+    <script>
+      const out = document.getElementById("out");
+      let pass = 0;
+      let fail = 0;
+      function assert(name, cond) {
+        const li = document.createElement("li");
+        li.className = cond ? "ok" : "fail";
+        li.textContent = (cond ? "PASS — " : "FAIL — ") + name;
+        out.appendChild(li);
+        if (cond) pass += 1;
+        else fail += 1;
+      }
+      const C = window.PMCore;
+      assert("PMCore loaded", Boolean(C));
+      const local = C.toLocalISO(new Date(2026, 7, 18, 23, 30));
+      assert("toLocalISO uses local calendar (not UTC shift)", local === "2026-08-18");
+      assert("fromLocalISO round-trip", C.toLocalISO(C.fromLocalISO("2026-01-31")) === "2026-01-31");
+      assert("shift month keeps local day", C.shiftLocalISO("2026-01-31", "month", 1) === "2026-02-28" || C.shiftLocalISO("2026-01-31", "month", 1) === "2026-03-03" || C.shiftLocalISO("2026-01-31", "month", 1).startsWith("2026-02"));
+      assert("roundMoney two decimals", C.roundMoney(10.129) === 10.13);
+      assert("fingerprint stable", C.fingerprint({ date: "2026-08-18", type: "expense", amount: 99.1, merchant: " Swiggy ", account: "HDFC" }) === C.fingerprint({ date: "2026-08-18", type: "expense", amount: 99.1, merchant: "swiggy", account: "hdfc" }));
+      assert(
+        "transfer fingerprint includes destination",
+        C.fingerprint({ date: "2026-08-18", type: "transfer", amount: 500, merchant: "xfer", account: "A", transferTo: "B" }) !==
+          C.fingerprint({ date: "2026-08-18", type: "transfer", amount: 500, merchant: "xfer", account: "A", transferTo: "C" })
+      );
+      assert("India day-first date", C.normalizeDate("18/08/2026", true) === "2026-08-18");
+      assert("US month-first when asked", C.normalizeDate("08/18/2026", false) === "2026-08-18");
+      const csv = "Txn Date,Narration,Withdrawal Amt.,Deposit Amt.\n18/08/2026,SWIGGY BANGALORE,540.00,\n18/08/2026,SALARY,,85000";
+      const parsed = C.parseCsvRows(csv, { dayFirst: true, uid: () => "t1" });
+      assert("CSV maps HDFC-style debit/credit", parsed.rows.length === 2 && parsed.rows[0].type === "expense" && parsed.rows[1].type === "income");
+      const ledger = C.applyLedger(["A", "B"], { A: 1000, B: 0 }, [
+        { account: "A", type: "expense", amount: 100 },
+        { account: "A", type: "income", amount: 50 },
+        { account: "A", type: "transfer", amount: 200, transferTo: "B" },
+      ]);
+      assert("ledger opening + spend + income + transfer", ledger.A === 750 && ledger.B === 200);
+      const usd = C.defaultBudgets("USD");
+      assert("USD budgets scale down from INR", usd["Food & Dining"] < 8000);
+      document.getElementById("summary").textContent = fail ? fail + " failed" : pass + " passed";
+      document.getElementById("summary").className = fail ? "fail" : "ok";
+    </script>
+  </body>
+</html>

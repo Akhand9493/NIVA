@@ -9,7 +9,7 @@ if ($LASTEXITCODE -ne 0) {
   exit 1
 }
 
-$repoName = "payment-modulator"
+$repoName = "NIVA"
 $existing = gh repo view $repoName 2>$null
 if ($LASTEXITCODE -ne 0) {
   gh repo create $repoName --public --source=. --remote=origin --push

@@ -2391,3 +2391,231 @@ dialog#csv-dialog {
     color: #111 !important;
   }
 }
+
+/* ——— UX polish: calmer, clearer hierarchy ——— */
+
+body {
+  background: #161016;
+}
+
+.bg-wallpaper {
+  opacity: 0.92;
+}
+
+.bg-mesh {
+  opacity: 0.28;
+  animation: none;
+  filter: blur(24px);
+}
+
+.bg-vignette {
+  background: radial-gradient(ellipse at center, transparent 55%, rgba(10, 4, 8, 0.45) 100%);
+}
+
+.welcome-simple {
+  display: grid;
+  place-items: center;
+  min-height: 100dvh;
+  padding: 1.5rem;
+}
+
+.welcome-simple .welcome-card {
+  width: min(420px, 100%);
+  transform: none;
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.35);
+}
+
+.btn.linkish {
+  background: transparent;
+  border: 0;
+  color: var(--ink-soft);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  font-weight: 500;
+  padding: 0.35rem;
+}
+
+.btn.linkish:hover {
+  color: #fff;
+}
+
+.intro-panel.slim {
+  display: block;
+  padding: 1rem 1.15rem;
+}
+
+.intro-panel.slim h1 {
+  margin: 0.15rem 0 0.35rem;
+  font-size: clamp(1.35rem, 3vw, 1.75rem);
+}
+
+.add-sheet h2 {
+  margin-top: 0;
+}
+
+.type-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  border: 0;
+  padding: 0;
+  margin: 0 0 0.75rem;
+}
+
+.chip-choice {
+  cursor: pointer;
+}
+
+.chip-choice input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.chip-choice span {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.55rem 0.95rem;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.04);
+  font-weight: 600;
+  font-size: 0.92rem;
+}
+
+.chip-choice input:checked + span {
+  border-color: var(--teal);
+  background: rgba(225, 29, 46, 0.22);
+  color: #fff;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+.more-fields {
+  margin: 0.65rem 0 0.85rem;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  padding: 0.35rem 0.75rem 0.55rem;
+  background: rgba(0, 0, 0, 0.15);
+}
+
+.more-fields summary,
+.more-insights summary,
+.profile-section summary {
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--ink-soft);
+  padding: 0.45rem 0;
+  list-style: none;
+}
+
+.more-fields summary::-webkit-details-marker,
+.more-insights summary::-webkit-details-marker,
+.profile-section summary::-webkit-details-marker {
+  display: none;
+}
+
+.more-fields summary::before,
+.more-insights summary::before,
+.profile-section summary::before {
+  content: "▸ ";
+  color: var(--muted);
+}
+
+.more-fields[open] summary::before,
+.more-insights[open] summary::before,
+.profile-section[open] summary::before {
+  content: "▾ ";
+}
+
+.more-fields label {
+  margin-top: 0.55rem;
+}
+
+.import-fold {
+  margin-top: 1rem;
+}
+
+.compact-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  align-items: center;
+}
+
+.compact-controls .field-label {
+  display: none;
+}
+
+.more-insights {
+  margin-top: 0.85rem;
+}
+
+.more-insights .nested-grid {
+  margin-top: 0.75rem;
+}
+
+.profile-section {
+  margin: 0.85rem 0;
+  padding: 0.35rem 0.85rem 0.75rem;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.profile-section .pin-box {
+  border: 0;
+  background: transparent;
+  padding: 0;
+  box-shadow: none;
+}
+
+.profile-page h1 {
+  margin-bottom: 0.25rem;
+}
+
+.file-btn.block {
+  display: inline-flex;
+  width: 100%;
+  justify-content: center;
+}
+
+.save-cluster .btn.ghost.tiny {
+  opacity: 0.85;
+}
+
+.hud-card {
+  box-shadow: none;
+}
+
+.panel {
+  backdrop-filter: blur(8px);
+}
+
+@media (max-width: 720px) {
+  .welcome-actions .btn.large {
+    width: 100%;
+  }
+
+  .type-chips {
+    justify-content: stretch;
+  }
+
+  .chip-choice {
+    flex: 1;
+  }
+
+  .chip-choice span {
+    width: 100%;
+    justify-content: center;
+  }
+}

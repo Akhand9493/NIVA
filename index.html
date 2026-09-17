@@ -20,73 +20,40 @@
   <body>
     <div class="bg-wallpaper" aria-hidden="true"></div>
     <div class="bg-mesh" aria-hidden="true"></div>
-    <div class="bg-scene" aria-hidden="true">
-      <span class="orb orb-a"></span>
-      <span class="orb orb-b"></span>
-      <span class="orb orb-c"></span>
-      <span class="shard s1"></span>
-      <span class="shard s2"></span>
-      <span class="shard s3"></span>
-    </div>
-    <div class="bg-texture" aria-hidden="true"></div>
-    <div class="bg-grain" aria-hidden="true"></div>
-    <div class="bg-spot" aria-hidden="true"></div>
     <div class="bg-vignette" aria-hidden="true"></div>
 
     <!-- WELCOME (first open) -->
     <div id="screen-welcome" class="screen">
-      <div class="welcome-stage">
-        <div class="welcome-card glass-3d">
+      <div class="welcome-stage welcome-simple">
+        <div class="welcome-card">
           <div class="brand-hero">
-            <img class="brand-hero-logo" src="icon.svg" width="88" height="88" alt="Niva logo" />
+            <img class="brand-hero-logo" src="icon.svg" width="72" height="72" alt="Niva logo" />
             <div>
               <p class="brand-name">Niva</p>
               <p class="brand-tag brand-motto">Know where it goes</p>
             </div>
           </div>
-          <p class="live-pill"><span class="pulse"></span> Private on this device</p>
-          <p class="muted small privacy-note">One profile per browser. Data stays on this device — not encrypted, not synced to the cloud.</p>
-          <h1>See where your money goes — in 2 minutes</h1>
+          <h1>Track spending in under a minute</h1>
           <p class="lede">
-            Tell us a few details, add spendings, then open Insights. Charts stay in their own place so adding money never feels messy.
+            Log what you spend, then see where it went. Everything stays in this browser — nothing is uploaded.
           </p>
           <ol class="how-steps">
             <li><span>1</span> Set up once</li>
-            <li><span>2</span> Add spendings</li>
-            <li><span>3</span> Get tips</li>
+            <li><span>2</span> Add spends</li>
+            <li><span>3</span> Check Insights</li>
           </ol>
           <div class="welcome-actions">
             <button type="button" class="btn primary large" id="btn-start-setup" onclick="window.startSetup&&window.startSetup();return false;">
-              Start with my money
-              <span class="btn-sub">A few short questions — including mobile and PIN</span>
+              Get started
+              <span class="btn-sub">Name, PIN, and a quick setup</span>
             </button>
-            <button type="button" class="btn secondary large" id="btn-open-demo" onclick="window.openDemo&&window.openDemo();return false;">
-              Peek at a demo first
-              <span class="btn-sub">Safe look around — your data stays empty</span>
+            <button type="button" class="btn ghost" id="btn-open-demo" onclick="window.openDemo&&window.openDemo();return false;">
+              Try a demo first
             </button>
-            <button type="button" class="btn ghost" id="btn-goto-login" onclick="window.showLogin&&window.showLogin();return false;">
-              Already have a profile? Log in
+            <button type="button" class="btn linkish" id="btn-goto-login" onclick="window.showLogin&&window.showLogin();return false;">
+              Already set up? Unlock
             </button>
           </div>
-        </div>
-        <div class="hero-orbit" aria-hidden="true">
-          <div class="float-card fc-a">
-            <span class="fc-kicker">This month</span>
-            <strong>₹ 24,180</strong>
-            <em>spent · still on track</em>
-          </div>
-          <div class="float-card fc-b">
-            <span class="fc-kicker">Pulse</span>
-            <strong>82</strong>
-            <em>strong week</em>
-          </div>
-          <div class="float-card fc-c">
-            <span class="fc-kicker">Dining</span>
-            <div class="mini-bar"><i style="width:64%"></i></div>
-            <em>34% of spend</em>
-          </div>
-          <div class="coin coin-1"></div>
-          <div class="coin coin-2"></div>
         </div>
       </div>
     </div>
@@ -94,19 +61,17 @@
     <!-- LOGIN (existing profile on this device) -->
     <div id="screen-login" class="screen" hidden>
       <div class="login-stage">
-        <div class="welcome-card login-card glass-3d">
+        <div class="welcome-card login-card">
           <div class="brand-hero">
-            <img class="brand-hero-logo" src="icon.svg" width="88" height="88" alt="Niva logo" />
+            <img class="brand-hero-logo" src="icon.svg" width="72" height="72" alt="Niva logo" />
             <div>
               <p class="brand-name">Niva</p>
               <p class="brand-tag brand-motto">Know where it goes</p>
             </div>
           </div>
-          <p class="live-pill"><span class="pulse"></span> Local login</p>
-          <p class="muted small privacy-note">One profile per browser. Data stays on this device — not encrypted, not synced.</p>
-          <h1>Log in</h1>
+          <h1>Unlock</h1>
           <p class="lede" id="login-copy">
-            Enter the mobile number and PIN for the profile on this device.
+            Enter the mobile number and PIN for this browser’s profile.
           </p>
           <form id="login-form" class="login-form" autocomplete="on">
             <label>Mobile number
@@ -121,29 +86,28 @@
               </label>
             </div>
             <button type="submit" class="btn primary large block" id="btn-login" onclick="window.submitLogin&&window.submitLogin();return false;">
-              <span id="login-btn-label">Log in</span>
-              <span class="btn-sub" id="login-btn-sub">Stays signed in until you close this tab</span>
+              <span id="login-btn-label">Unlock</span>
+              <span class="btn-sub" id="login-btn-sub">Stays unlocked until you close this tab</span>
             </button>
             <p class="form-status login-status" id="login-status" aria-live="polite"></p>
           </form>
           <div class="welcome-actions login-extra">
-            <button type="button" class="btn primary large" id="btn-create-profile" onclick="window.createNewProfile&&window.createNewProfile();return false;">
-              Create new profile
-              <span class="btn-sub" id="create-profile-sub">First time on this browser — set up in about a minute</span>
+            <button type="button" class="btn secondary" id="btn-create-profile" onclick="window.createNewProfile&&window.createNewProfile();return false;">
+              Create a new profile
+              <span class="btn-sub" id="create-profile-sub">For a new person on this browser</span>
             </button>
-            <button type="button" class="btn secondary" id="btn-login-demo" onclick="window.openDemo&&window.openDemo();return false;">
-              Peek at a demo
-              <span class="btn-sub">Sample data only — not your profile</span>
+            <button type="button" class="btn ghost" id="btn-login-demo" onclick="window.openDemo&&window.openDemo();return false;">
+              Try demo
             </button>
           </div>
           <div class="login-reset">
-            <button type="button" class="btn ghost tiny" id="btn-forgot-reset">Forgot / reset this device</button>
+            <button type="button" class="btn ghost tiny" id="btn-forgot-reset">Erase this browser’s data…</button>
             <div id="login-reset-panel" hidden>
-              <p class="muted small" id="login-reset-copy">Type the mobile number on this profile to erase everything on this device.</p>
+              <p class="muted small" id="login-reset-copy">Type the mobile number on this profile to erase everything here.</p>
               <label>Confirm reset
                 <input type="text" id="login-reset-confirm" autocomplete="off" placeholder="Mobile number" />
               </label>
-              <button type="button" class="btn danger" id="btn-confirm-device-reset">Erase this device</button>
+              <button type="button" class="btn danger" id="btn-confirm-device-reset">Erase everything</button>
               <p class="form-status login-status" id="login-reset-status" aria-live="polite"></p>
             </div>
           </div>
@@ -248,95 +212,86 @@
           </button>
         </nav>
         <div class="save-cluster">
-          <p class="save-status" id="save-status">Saved on this device</p>
-          <button type="button" class="btn primary tiny" id="btn-save-local">Save locally</button>
+          <p class="save-status" id="save-status">Auto-saved</p>
+          <button type="button" class="btn ghost tiny" id="btn-save-local">Backup</button>
         </div>
       </header>
 
       <div id="demo-banner" class="demo-banner" hidden>
-        <strong>You’re in demo mode</strong> — this is sample money. Your real list is unchanged.
-        <button type="button" class="btn tiny secondary" id="btn-exit-demo">Back to my money</button>
+        <strong>Demo mode</strong> — sample data only. Your real list is untouched.
+        <button type="button" class="btn tiny secondary" id="btn-exit-demo">Exit demo</button>
       </div>
 
       <!-- TRACK -->
       <main id="view-track" class="layout view">
-        <section class="panel intro-panel rowish hud-card">
+        <section class="panel intro-panel slim">
           <div>
             <p class="eyebrow" id="track-greet">Welcome</p>
-            <h1 id="track-heading">Add a spending</h1>
-            <p class="muted" id="next-action">Tap Spent or Received, fill the amount, then save. Open Insights for charts.</p>
+            <h1 id="track-heading">Add a spend</h1>
+            <p class="muted" id="next-action">Amount first, then who and category. Insights shows charts.</p>
           </div>
-          <button type="button" class="btn primary" id="btn-jump-insights">See insights →</button>
         </section>
 
         <section class="grid-2-track">
-          <form id="quick-form" class="panel form-card hud-card">
-            <div class="panel-kicker">Fast entry</div>
-            <h2>Log this payment</h2>
-            <p class="step-hint">3 things matter most: type, amount, and where it went.</p>
+          <form id="quick-form" class="panel form-card add-sheet">
+            <h2>New entry</h2>
 
-            <fieldset class="type-pick choice-grid">
-              <legend>What happened?</legend>
-              <label class="choice">
+            <label class="amount-field">Amount
+              <input type="number" id="q-amount" required min="0.01" step="0.01" placeholder="0" inputmode="decimal" autofocus />
+            </label>
+
+            <fieldset class="type-pick type-chips">
+              <legend class="sr-only">Type</legend>
+              <label class="chip-choice">
                 <input type="radio" name="q-type" value="expense" checked />
-                <span class="choice-ico" aria-hidden="true">↓</span>
-                <span class="choice-title">Spent</span>
-                <span class="choice-sub">Money went out</span>
+                <span>Spent</span>
               </label>
-              <label class="choice">
+              <label class="chip-choice">
                 <input type="radio" name="q-type" value="income" />
-                <span class="choice-ico in" aria-hidden="true">↑</span>
-                <span class="choice-title">Received</span>
-                <span class="choice-sub">Money came in</span>
+                <span>Received</span>
               </label>
-              <label class="choice">
+              <label class="chip-choice">
                 <input type="radio" name="q-type" value="transfer" />
-                <span class="choice-ico in" aria-hidden="true">⇄</span>
-                <span class="choice-title">Transfer</span>
-                <span class="choice-sub">Between my accounts</span>
+                <span>Transfer</span>
               </label>
             </fieldset>
             <div id="transfer-fields" hidden>
-              <label>Send to account <select id="q-transfer-to"></select></label>
+              <label>To account <select id="q-transfer-to"></select></label>
             </div>
 
-            <label class="amount-field">How much?
-              <input type="number" id="q-amount" required min="0.01" step="0.01" placeholder="0" inputmode="decimal" />
-            </label>
-            <label>Paid to / received from <input type="text" id="q-merchant" required placeholder="Swiggy, Rent, Salary…" /></label>
+            <label>Who / what <input type="text" id="q-merchant" required placeholder="Swiggy, Rent, Salary…" /></label>
             <div class="form-row-2">
-              <label>When <input type="date" id="q-date" required /></label>
               <label>Category <select id="q-category"></select></label>
+              <label>Account <select id="q-account" required></select></label>
             </div>
-            <label>From which account? <select id="q-account" required></select></label>
-            <label>Note <input type="text" id="q-note" placeholder="Optional — lunch with team" /></label>
 
-            <button type="submit" class="btn primary large block">Save this payment</button>
+            <details class="more-fields">
+              <summary>Date &amp; note</summary>
+              <label>Date <input type="date" id="q-date" required /></label>
+              <label>Note <input type="text" id="q-note" placeholder="Optional" /></label>
+            </details>
+
+            <button type="submit" class="btn primary large block">Save</button>
             <p class="form-status" id="form-status" aria-live="polite"></p>
           </form>
 
-          <section class="panel hud-card">
-            <div class="panel-kicker">Your ledger</div>
-            <h2>All your payments</h2>
-            <p class="muted" id="track-count">0 saved</p>
-            <p class="muted small">Tick rows to change many at once — or tap Edit on one line.</p>
-            <div class="stack gap tight">
-              <label class="btn secondary file-btn">
-                Import from bank CSV
-                <input type="file" id="csv-input" accept=".csv,text/csv" hidden />
-              </label>
-              <p class="muted small">Bank CSV imports open a preview so you can map columns and skip duplicates.</p>
+          <section class="panel">
+            <div class="panel-head row">
+              <div>
+                <h2>Recent</h2>
+                <p class="muted" id="track-count">0 saved</p>
+              </div>
             </div>
             <label class="list-search">
-              Find in list
-              <input type="search" id="track-search" placeholder="Search merchant, category, account…" />
+              Search
+              <input type="search" id="track-search" placeholder="Merchant, category…" />
             </label>
             <div class="bulk-bar" id="bulk-bar" hidden>
               <span id="bulk-count">0 selected</span>
               <div class="bulk-actions">
-                <button type="button" class="btn tiny secondary" id="btn-bulk-edit">Edit selected</button>
-                <button type="button" class="btn tiny danger" id="btn-bulk-delete">Delete selected</button>
-                <button type="button" class="btn tiny ghost" id="btn-bulk-clear">Clear ticks</button>
+                <button type="button" class="btn tiny secondary" id="btn-bulk-edit">Edit</button>
+                <button type="button" class="btn tiny danger" id="btn-bulk-delete">Delete</button>
+                <button type="button" class="btn tiny ghost" id="btn-bulk-clear">Clear</button>
               </div>
             </div>
             <div class="table-wrap">
@@ -355,30 +310,36 @@
                 <tbody id="track-tx-body"></tbody>
               </table>
             </div>
-            <p class="empty-inline" id="track-empty">Nothing here yet — log your first payment on the left.</p>
+            <p class="empty-inline" id="track-empty">Nothing yet — add your first spend on the left.</p>
             <div class="pager" id="track-pager" hidden>
               <button type="button" class="btn ghost tiny" id="track-prev">Newer</button>
               <span id="track-page-label">Page 1</span>
               <button type="button" class="btn ghost tiny" id="track-next">Older</button>
             </div>
+            <details class="more-fields import-fold">
+              <summary>Import bank CSV</summary>
+              <label class="btn secondary file-btn block">
+                Choose CSV file
+                <input type="file" id="csv-input" accept=".csv,text/csv" hidden />
+              </label>
+              <p class="muted small">Map columns and skip duplicates before importing.</p>
+            </details>
           </section>
         </section>
       </main>
 
       <!-- RESULTS -->
       <main id="view-results" class="layout view" hidden>
-        <section class="panel intro-panel rowish hud-card">
+        <section class="panel intro-panel slim">
           <div>
-            <p class="eyebrow">Live readout</p>
-            <h1>Your insights</h1>
-            <p class="muted">Score, charts, and cut tips from the payments you logged.</p>
+            <p class="eyebrow">Overview</p>
+            <h1>Insights</h1>
+            <p class="muted">How you’re doing this period — based on what you logged.</p>
           </div>
-          <button type="button" class="btn secondary" id="btn-goto-track">← Add another payment</button>
         </section>
 
-        <section class="controls panel">
+        <section class="controls panel compact-controls">
           <div class="control-group">
-            <span class="field-label">View by</span>
             <div class="segmented" role="group" aria-label="Time period">
               <button type="button" class="seg active" data-period="day">Day</button>
               <button type="button" class="seg" data-period="month">Month</button>
@@ -386,7 +347,6 @@
             </div>
           </div>
           <div class="control-group">
-            <span class="field-label">Focus date</span>
             <div class="date-nav">
               <button type="button" class="icon-round" id="btn-prev" aria-label="Previous">‹</button>
               <input type="date" id="anchor-date" />
@@ -395,24 +355,21 @@
             </div>
           </div>
           <div class="control-group">
-            <label class="field-label" for="account-filter">Account</label>
-            <select id="account-filter"><option value="all">All accounts</option></select>
+            <select id="account-filter" aria-label="Account"><option value="all">All accounts</option></select>
           </div>
           <div class="control-group grow">
-            <label class="field-label" for="search">Search</label>
-            <input type="search" id="search" placeholder="Merchant or note…" />
+            <input type="search" id="search" placeholder="Search…" aria-label="Search" />
           </div>
           <div class="control-group">
-            <span class="field-label">Backup</span>
-            <button type="button" class="btn ghost" id="btn-export">Save / export</button>
+            <button type="button" class="btn ghost tiny" id="btn-export">Export</button>
           </div>
         </section>
 
         <section class="hero-strip panel" id="health-strip">
           <div>
-            <p class="eyebrow">Money pulse</p>
-            <h2 id="health-title">Insights</h2>
-            <p class="muted" id="health-sub">Add a few payments to unlock your score.</p>
+            <p class="eyebrow">Health</p>
+            <h2 id="health-title">This period</h2>
+            <p class="muted" id="health-sub">Add a few spends to unlock your score.</p>
           </div>
           <div class="health-meter">
             <div class="ring-wrap">
@@ -451,49 +408,43 @@
           </section>
           <section class="panel">
             <div class="panel-head">
-              <h2>Top merchants</h2>
-              <p class="muted">Highest outflow</p>
-            </div>
-            <div id="merchant-list" class="merchant-list"></div>
-          </section>
-        </div>
-
-        <div class="grid-2">
-          <section class="panel">
-            <div class="panel-head">
-              <h2>Where you can save</h2>
-              <p class="muted">Plain-language tips from your habits</p>
+              <h2>Tips</h2>
+              <p class="muted">Based on your habits</p>
             </div>
             <ul id="insights-list" class="insights"></ul>
           </section>
-          <section class="panel">
-            <div class="panel-head">
-              <h2>Accounts</h2>
-              <p class="muted">From your tracked activity</p>
-            </div>
-            <div id="accounts-list" class="accounts"></div>
-            <h3 class="subhead">Likely recurring</h3>
-            <div id="recurring-list" class="recurring-list"></div>
-            <h3 class="subhead">Coming bills</h3>
-            <p class="muted small">If these repeat next period, will a budget break?</p>
-            <div id="forecast-list" class="recurring-list"></div>
-          </section>
         </div>
 
-        <section class="panel">
+        <details class="panel more-insights">
+          <summary>More detail — merchants, accounts, recurring</summary>
+          <div class="grid-2 nested-grid">
+            <section>
+              <h3 class="subhead">Top merchants</h3>
+              <div id="merchant-list" class="merchant-list"></div>
+            </section>
+            <section>
+              <h3 class="subhead">Accounts</h3>
+              <div id="accounts-list" class="accounts"></div>
+              <h3 class="subhead">Likely recurring</h3>
+              <div id="recurring-list" class="recurring-list"></div>
+              <h3 class="subhead">Coming bills</h3>
+              <div id="forecast-list" class="recurring-list"></div>
+            </section>
+          </div>
+        </details>
+
+        <details class="panel more-insights">
+          <summary>Transactions in this period</summary>
           <div class="panel-head row">
-            <div>
-              <h2>Transactions in this view</h2>
-              <p class="muted" id="tx-count">0 items</p>
-            </div>
-            <button type="button" class="btn ghost" id="btn-print">Print report</button>
+            <p class="muted" id="tx-count">0 items</p>
+            <button type="button" class="btn ghost tiny" id="btn-print">Print</button>
           </div>
           <div class="bulk-bar" id="results-bulk-bar" hidden>
             <span id="results-bulk-count">0 selected</span>
             <div class="bulk-actions">
-              <button type="button" class="btn tiny secondary" id="btn-results-bulk-edit">Edit selected</button>
-              <button type="button" class="btn tiny danger" id="btn-results-bulk-delete">Delete selected</button>
-              <button type="button" class="btn tiny ghost" id="btn-results-bulk-clear">Clear ticks</button>
+              <button type="button" class="btn tiny secondary" id="btn-results-bulk-edit">Edit</button>
+              <button type="button" class="btn tiny danger" id="btn-results-bulk-delete">Delete</button>
+              <button type="button" class="btn tiny ghost" id="btn-results-bulk-clear">Clear</button>
             </div>
           </div>
           <div class="table-wrap">
@@ -514,13 +465,13 @@
               <tbody id="results-tx-body"></tbody>
             </table>
           </div>
-          <p class="empty-inline" id="results-empty" hidden>No data in this period — add payments in Track.</p>
+          <p class="empty-inline" id="results-empty" hidden>No data in this period — add spends on the Add tab.</p>
           <div class="pager" id="results-pager" hidden>
             <button type="button" class="btn ghost tiny" id="results-prev">Newer</button>
             <span id="results-page-label">Page 1</span>
             <button type="button" class="btn ghost tiny" id="results-next">Older</button>
           </div>
-        </section>
+        </details>
       </main>
 
       <!-- DEMO (same results UI, sample data) -->
@@ -537,105 +488,117 @@
 
       <!-- EDIT DETAILS -->
       <main id="view-setup-edit" class="layout view" hidden>
-        <section class="panel form-card narrow">
-          <h1>Your profile</h1>
-          <p class="muted">Photo, contact details, and money targets — stored only on this device.</p>
+        <section class="panel form-card narrow profile-page">
+          <h1>Profile</h1>
+          <p class="muted">Settings for this browser only.</p>
 
-          <div class="pin-box panel" id="pin-gate">
-            <h2>Account security</h2>
-            <p class="muted" id="pin-copy">Your mobile number and PIN lock this profile on this device. Close the tab to log out automatically.</p>
-            <p class="masked-mobile">Signed in as <strong id="profile-mobile-masked">••••••••••</strong></p>
-            <h3 class="subhead">Change PIN</h3>
-            <label>Current PIN <input type="password" id="pin-current" inputmode="numeric" maxlength="8" autocomplete="current-password" /></label>
-            <div class="form-row-2" id="pin-set-row">
-              <label>New 4–8 digit PIN <input type="password" id="pin-new" inputmode="numeric" maxlength="8" autocomplete="new-password" /></label>
-              <label>Confirm new PIN <input type="password" id="pin-confirm" inputmode="numeric" maxlength="8" autocomplete="new-password" /></label>
-            </div>
-            <div class="row-actions">
-              <button type="button" class="btn primary" id="btn-change-pin">Update PIN</button>
-              <button type="button" class="btn secondary" id="btn-logout" onclick="window.logoutSession&&window.logoutSession();return false;">Log out</button>
-            </div>
-            <p class="form-status" id="pin-status"></p>
-          </div>
-
-          <div id="sensitive-wrap">
-            <div class="profile-identity">
-              <div class="avatar-wrap">
-                <img id="profile-photo" alt="" hidden />
-                <span class="avatar-fallback" id="profile-photo-fallback" aria-hidden="true">+</span>
+          <details class="profile-section" open>
+            <summary>Security</summary>
+            <div class="pin-box" id="pin-gate">
+              <p class="muted" id="pin-copy">Mobile + PIN unlock this profile. Closing the tab locks it again.</p>
+              <p class="masked-mobile">Signed in as <strong id="profile-mobile-masked">••••••••••</strong></p>
+              <h3 class="subhead">Change PIN</h3>
+              <label>Current PIN <input type="password" id="pin-current" inputmode="numeric" maxlength="8" autocomplete="current-password" /></label>
+              <div class="form-row-2" id="pin-set-row">
+                <label>New PIN <input type="password" id="pin-new" inputmode="numeric" maxlength="8" autocomplete="new-password" /></label>
+                <label>Confirm <input type="password" id="pin-confirm" inputmode="numeric" maxlength="8" autocomplete="new-password" /></label>
               </div>
-              <div class="profile-identity-copy">
-                <h2>Your photo</h2>
-                <p class="muted">Optional. A square photo works best. It stays in this browser with your other data.</p>
-                <div class="row-actions">
-                  <label class="btn secondary file-btn">
-                    Upload photo
-                    <input type="file" id="photo-input" accept="image/*" hidden />
-                  </label>
-                  <button type="button" class="btn ghost" id="btn-remove-photo">Remove</button>
+              <div class="row-actions">
+                <button type="button" class="btn primary" id="btn-change-pin">Update PIN</button>
+                <button type="button" class="btn secondary" id="btn-logout" onclick="window.logoutSession&&window.logoutSession();return false;">Lock</button>
+              </div>
+              <p class="form-status" id="pin-status"></p>
+            </div>
+          </details>
+
+          <details class="profile-section" open>
+            <summary>About you</summary>
+            <div id="sensitive-wrap">
+              <div class="profile-identity">
+                <div class="avatar-wrap">
+                  <img id="profile-photo" alt="" hidden />
+                  <span class="avatar-fallback" id="profile-photo-fallback" aria-hidden="true">+</span>
+                </div>
+                <div class="profile-identity-copy">
+                  <p class="muted">Optional photo — stays in this browser.</p>
+                  <div class="row-actions">
+                    <label class="btn secondary file-btn">
+                      Upload
+                      <input type="file" id="photo-input" accept="image/*" hidden />
+                    </label>
+                    <button type="button" class="btn ghost" id="btn-remove-photo">Remove</button>
+                  </div>
                 </div>
               </div>
+              <label>Name <input type="text" id="edit-name" autocomplete="name" placeholder="e.g. Priya" /></label>
+              <div class="form-row-2">
+                <label>Phone <input type="tel" id="edit-phone" autocomplete="tel" inputmode="tel" placeholder="+91 …" /></label>
+                <label>Email <input type="email" id="edit-email" autocomplete="email" placeholder="you@email.com" /></label>
+              </div>
+              <details class="more-fields">
+                <summary>Optional details</summary>
+                <label>Date of birth <input type="date" id="edit-dob" /></label>
+                <div class="form-row-2">
+                  <label>City <input type="text" id="edit-city" autocomplete="address-level2" /></label>
+                  <label>Occupation <input type="text" id="edit-occupation" /></label>
+                </div>
+                <label>
+                  Gender
+                  <select id="edit-gender">
+                    <option value="">Prefer not to say</option>
+                    <option value="woman">Woman</option>
+                    <option value="man">Man</option>
+                    <option value="nonbinary">Non-binary</option>
+                    <option value="other">Other</option>
+                  </select>
+                </label>
+                <label>Notes <textarea id="edit-notes" rows="2" placeholder="Optional"></textarea></label>
+              </details>
             </div>
+          </details>
+
+          <details class="profile-section" open>
+            <summary>Money</summary>
+            <label>
+              Currency
+              <select id="edit-currency">
+                <option value="INR">INR (₹)</option>
+                <option value="USD">USD ($)</option>
+                <option value="EUR">EUR (€)</option>
+                <option value="GBP">GBP (£)</option>
+              </select>
+            </label>
             <div class="form-row-2">
-              <label>Phone number <input type="tel" id="edit-phone" autocomplete="tel" inputmode="tel" placeholder="+91 98765 43210" /></label>
-              <label>Email <input type="email" id="edit-email" autocomplete="email" placeholder="you@email.com" /></label>
+              <label>Monthly income <input type="number" id="edit-income" min="0" step="100" /></label>
+              <label>Savings goal <input type="number" id="edit-savings" min="0" step="100" /></label>
             </div>
-            <label>Date of birth <input type="date" id="edit-dob" /></label>
-          </div>
+            <h3 class="subhead">Accounts</h3>
+            <div id="edit-accounts" class="stack"></div>
+            <button type="button" class="btn ghost" id="btn-edit-add-account">+ Add account</button>
+            <h3 class="subhead">Monthly budgets</h3>
+            <div id="edit-budgets" class="budget-grid"></div>
+          </details>
 
-          <h2 class="spaced">About you</h2>
-          <label>Full name <input type="text" id="edit-name" autocomplete="name" placeholder="e.g. Priya Sharma" /></label>
-          <div class="form-row-2">
-            <label>City / town <input type="text" id="edit-city" autocomplete="address-level2" placeholder="Bengaluru" /></label>
-            <label>Occupation <input type="text" id="edit-occupation" placeholder="Student, designer, founder…" /></label>
-          </div>
-          <label>
-            Gender
-            <select id="edit-gender">
-              <option value="">Prefer not to say</option>
-              <option value="woman">Woman</option>
-              <option value="man">Man</option>
-              <option value="nonbinary">Non-binary</option>
-              <option value="other">Other</option>
-            </select>
-          </label>
-          <label>Notes for yourself <textarea id="edit-notes" rows="3" placeholder="Anything useful — payday date, family members on this budget…"></textarea></label>
-
-          <h2 class="spaced">Money settings</h2>
-          <label>
-            Currency
-            <select id="edit-currency">
-              <option value="INR">INR (₹)</option>
-              <option value="USD">USD ($)</option>
-              <option value="EUR">EUR (€)</option>
-              <option value="GBP">GBP (£)</option>
-            </select>
-          </label>
-          <div class="form-row-2">
-            <label>Monthly income <input type="number" id="edit-income" min="0" step="100" /></label>
-            <label>Savings goal <input type="number" id="edit-savings" min="0" step="100" /></label>
-          </div>
-          <h2 class="spaced">Accounts</h2>
-          <div id="edit-accounts" class="stack"></div>
-          <button type="button" class="btn ghost" id="btn-edit-add-account">+ Add account</button>
-          <h2 class="spaced">Monthly budgets</h2>
-          <div id="edit-budgets" class="budget-grid"></div>
           <div class="row-actions spaced">
-            <button type="button" class="btn primary" id="btn-save-details">Save profile</button>
-            <button type="button" class="btn secondary" id="btn-goto-demo-from-profile">Try demo</button>
-            <button type="button" class="btn ghost danger" id="btn-reset-all">Reset app (clear everything)</button>
+            <button type="button" class="btn primary" id="btn-save-details">Save changes</button>
           </div>
           <p class="form-status" id="edit-status" aria-live="polite"></p>
-          <hr class="soft" />
-          <h2>Keep a copy on this computer</h2>
-          <p class="muted">Payments already auto-save in this browser. Use this to download a file you can reopen later.</p>
-          <div class="row-actions">
-            <button type="button" class="btn primary" id="btn-save-file">Save data as a file</button>
-            <label class="btn secondary file-btn">
-              Open a saved file
-              <input type="file" id="backup-input" accept=".json,application/json" hidden />
-            </label>
-          </div>
+
+          <details class="profile-section">
+            <summary>Backup &amp; advanced</summary>
+            <p class="muted">Data already auto-saves here. Download a file if you want a copy on your computer.</p>
+            <div class="row-actions">
+              <button type="button" class="btn secondary" id="btn-save-file">Download backup</button>
+              <label class="btn ghost file-btn">
+                Restore file
+                <input type="file" id="backup-input" accept=".json,application/json" hidden />
+              </label>
+            </div>
+            <div class="row-actions spaced">
+              <button type="button" class="btn ghost" id="btn-goto-demo-from-profile">Try demo</button>
+              <button type="button" class="btn ghost danger" id="btn-reset-all">Erase all data…</button>
+            </div>
+          </details>
         </section>
       </main>
     </div>
@@ -646,9 +609,9 @@
         <p class="muted" id="edit-dialog-hint">Change any field, then save.</p>
         <input type="hidden" id="e-id" />
         <fieldset class="type-pick">
-          <legend>What kind?</legend>
-          <label class="chip"><input type="radio" name="e-type" value="expense" checked /> Money out</label>
-          <label class="chip"><input type="radio" name="e-type" value="income" /> Money in</label>
+          <legend>Type</legend>
+          <label class="chip"><input type="radio" name="e-type" value="expense" checked /> Spent</label>
+          <label class="chip"><input type="radio" name="e-type" value="income" /> Received</label>
           <label class="chip"><input type="radio" name="e-type" value="transfer" /> Transfer</label>
         </fieldset>
         <label>Date <input type="date" id="e-date" required /></label>

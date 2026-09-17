@@ -296,14 +296,16 @@
   }
 
   function updateSaveStatus(flash) {
-    const text = formatSavedAt(state.lastSavedAt);
+    const text = state.lastSavedAt ? "Auto-saved" : "Not saved yet";
+    const detail = formatSavedAt(state.lastSavedAt);
     const status = $("save-status");
     const dialogStatus = $("save-dialog-status");
     if (status) {
-      status.textContent = flash ? "Saved on this device" : text;
+      status.textContent = flash ? "Saved ✓" : text;
+      status.title = detail;
       status.classList.toggle("flash", Boolean(flash));
     }
-    if (dialogStatus) dialogStatus.textContent = text;
+    if (dialogStatus) dialogStatus.textContent = detail;
   }
 
   function showToast(message, actionLabel, onAction) {
@@ -580,25 +582,25 @@
     const hasMobile = Boolean(normalizeMobile(storedMobile()));
     const btnLabel = $("login-btn-label");
     const sub = $("login-btn-sub");
-    if (btnLabel) btnLabel.textContent = hasPin ? "Log in" : "Save PIN and enter";
-    else if ($("btn-login")) $("btn-login").textContent = hasPin ? "Log in" : "Save PIN and enter";
+    if (btnLabel) btnLabel.textContent = hasPin ? "Unlock" : "Save PIN and unlock";
+    else if ($("btn-login")) $("btn-login").textContent = hasPin ? "Unlock" : "Save PIN and unlock";
     if (sub) {
       sub.textContent = hasPin
-        ? "Stays signed in until you close this tab"
-        : "Required to open this profile next time";
+        ? "Stays unlocked until you close this tab"
+        : "Required next time you open Niva here";
     }
     if ($("login-confirm-wrap")) $("login-confirm-wrap").hidden = hasPin;
     if ($("login-copy")) {
       $("login-copy").textContent = !hasPin
-        ? "This device holds one profile. Set a mobile number and PIN before anyone can open it. Data stays here — not encrypted, not synced."
+        ? "Set a mobile number and PIN to lock this browser’s profile."
         : !hasMobile
-          ? "Enter a mobile number and your PIN to continue."
-          : "Enter the mobile number and PIN for the profile on this browser. New here? Use Create new profile below.";
+          ? "Enter your mobile number and PIN to continue."
+          : "Enter the mobile and PIN for this browser’s profile.";
     }
     if ($("login-reset-copy")) {
       $("login-reset-copy").textContent = hasMobile
-        ? "Type the mobile number on this profile to erase everything on this device."
-        : "Type RESET THIS DEVICE to erase everything on this browser.";
+        ? "Type the mobile number on this profile to erase everything here."
+        : "Type RESET THIS DEVICE to erase everything in this browser.";
     }
     if ($("login-reset-confirm")) {
       $("login-reset-confirm").placeholder = hasMobile ? "Mobile number" : "RESET THIS DEVICE";
@@ -609,8 +611,8 @@
     const createSub = $("create-profile-sub");
     if (createSub) {
       createSub.textContent = hasPin
-        ? "Erases the profile on this browser and starts fresh"
-        : "First time on this browser — set up in about a minute";
+        ? "Erases the current profile on this browser"
+        : "First time here — about a minute";
     }
     setLoginStatus(message || "");
   }
@@ -737,7 +739,7 @@
     const first = name ? name.split(" ")[0] : "";
     if ($("app-subtitle")) {
       $("app-subtitle").textContent = state.demoMode
-        ? "Demo tour"
+        ? "Demo"
         : first
           ? `Hi, ${first}`
           : "Know where it goes";
@@ -746,12 +748,12 @@
       $("track-greet").textContent = first ? `Hey ${first}` : "Welcome";
     }
     if ($("track-heading")) {
-      $("track-heading").textContent = state.transactions.length ? "Log another payment" : "Add your first spending";
+      $("track-heading").textContent = state.transactions.length ? "Add another" : "Add your first spend";
     }
     if ($("next-action")) {
       $("next-action").textContent = state.transactions.length
-        ? "Keep logging as you spend. Tick several rows to fix them together, then check Insights."
-        : "Tap Spent or Received, type the amount, then save. Insights unlocks after a few entries.";
+        ? "Amount → who → Save. Check Insights anytime."
+        : "Enter the amount, pick Spent or Received, then Save.";
     }
     applyPhoto(state.demoMode ? "" : state.settings.photo);
   }
@@ -854,7 +856,7 @@
         return;
       }
       if (view === "track" || view === "setup-edit") {
-        alert("Exit demo first — tap “Back to my money” on the banner.");
+        alert("Exit demo first — tap Exit demo on the banner.");
         return;
       }
     }
@@ -983,7 +985,7 @@
     });
     if ($("btn-setup-back")) $("btn-setup-back").hidden = step === 1;
     if ($("btn-setup-next")) {
-      $("btn-setup-next").textContent = step === SETUP_LAST_STEP ? "Done — take me to Add spend" : "Continue";
+      $("btn-setup-next").textContent = step === SETUP_LAST_STEP ? "Done — go to Add" : "Continue";
     }
   }
 
@@ -1271,7 +1273,7 @@
           kind: "tip",
           icon: "i",
           title: "No expenses in this view",
-          body: "Go to Track and add payments, then return here.",
+          body: "Open the Add tab, save a few spends, then come back.",
         },
       ];
     }
@@ -1761,7 +1763,7 @@
     if ($("pin-set-row")) $("pin-set-row").hidden = false;
     if ($("pin-copy")) {
       $("pin-copy").textContent =
-        "Your mobile and PIN lock this profile on this device. Data is stored locally — not encrypted. Close the tab to log out.";
+        "Mobile + PIN unlock this profile. Closing the tab locks it again. Data stays in this browser.";
     }
     applyPhoto(state.demoMode ? "" : state.settings.photo);
   }
@@ -2157,7 +2159,7 @@
       }
       const payload = {
         id: uid(),
-        date: $("q-date").value,
+        date: $("q-date").value || todayISO(),
         merchant: $("q-merchant").value.trim() || (type === "transfer" ? `To ${transferTo}` : ""),
         amount: parseAmount($("q-amount").value),
         type,

@@ -119,8 +119,8 @@
     <div id="screen-setup" class="screen" hidden>
       <div class="wizard">
         <header class="wizard-head">
-          <p class="eyebrow">Quick setup</p>
-          <h1>Let’s personalize this for you</h1>
+          <p class="eyebrow">Setup</p>
+          <h1>A few quick questions</h1>
           <p class="muted" id="setup-step-label">Step 1 of 5 — about you</p>
           <div class="step-pills" aria-hidden="true">
             <span class="step-pill on" data-pill="1">You</span>
@@ -133,9 +133,9 @@
         </header>
 
         <section class="wizard-step panel" data-step="1">
-          <h2>What should we call you?</h2>
-          <p class="muted">This shows up on your Insights screen — first name is enough.</p>
-          <label>Your name <input type="text" id="setup-name" placeholder="e.g. Priya" required autocomplete="given-name" /></label>
+          <h2>Your name</h2>
+          <p class="muted">First name is enough.</p>
+          <label>Name <input type="text" id="setup-name" placeholder="e.g. Priya" required autocomplete="given-name" /></label>
           <label>
             Currency
             <select id="setup-currency">
@@ -148,9 +148,9 @@
         </section>
 
         <section class="wizard-step panel" data-step="2" hidden>
-          <h2>Lock this profile to you</h2>
-          <p class="muted">Anyone who opens this app on this browser must enter this mobile number and PIN. The PIN is stored as a hash — never as plain text.</p>
-          <label>Mobile number <input type="tel" id="setup-mobile" required autocomplete="tel" inputmode="tel" placeholder="10 digits or +91 98765 43210" /></label>
+          <h2>Mobile &amp; PIN</h2>
+          <p class="muted">Unlocks Niva on this browser. PIN is never stored as plain text.</p>
+          <label>Mobile number <input type="tel" id="setup-mobile" required autocomplete="tel" inputmode="tel" placeholder="10 digits or +91" /></label>
           <div class="form-row-2">
             <label>PIN (4–8 digits) <input type="password" id="setup-pin" inputmode="numeric" maxlength="8" autocomplete="new-password" required /></label>
             <label>Confirm PIN <input type="password" id="setup-pin-confirm" inputmode="numeric" maxlength="8" autocomplete="new-password" required /></label>
@@ -158,22 +158,22 @@
         </section>
 
         <section class="wizard-step panel" data-step="3" hidden>
-          <h2>What comes in — and what you want to keep</h2>
-          <p class="muted">Approximate is fine. Insights uses this to score your month.</p>
+          <h2>Income &amp; savings</h2>
+          <p class="muted">Approximate is fine — used for your Insights score.</p>
           <label>Usual monthly income <input type="number" id="setup-income" min="0" step="100" placeholder="85000" inputmode="numeric" /></label>
           <label>Monthly savings goal <input type="number" id="setup-savings" min="0" step="100" placeholder="15000" inputmode="numeric" /></label>
         </section>
 
         <section class="wizard-step panel" data-step="4" hidden>
-          <h2>Which accounts should we watch?</h2>
-          <p class="muted">Nicknames are enough — like HDFC salary or SBI UPI. Opening balance is optional and used for running totals.</p>
+          <h2>Accounts</h2>
+          <p class="muted">Nicknames like “HDFC salary” or “SBI UPI”. Opening balance is optional.</p>
           <div id="setup-accounts" class="stack"></div>
           <button type="button" class="btn ghost" id="btn-add-account-field">+ Add another account</button>
         </section>
 
         <section class="wizard-step panel" data-step="5" hidden>
-          <h2>Set soft monthly limits</h2>
-          <p class="muted">These are reminders, not locks. Insights will flag anything that goes over.</p>
+          <h2>Monthly budgets</h2>
+          <p class="muted">Soft limits — Insights warns if you go over.</p>
           <div id="setup-budgets" class="budget-grid"></div>
         </section>
 
@@ -200,7 +200,7 @@
         <nav class="main-tabs" role="tablist" aria-label="App sections">
           <button type="button" class="tab active" data-view="track" role="tab" aria-selected="true">
             <span class="tab-ico" aria-hidden="true">＋</span>
-            <span class="tab-label">Add</span>
+            <span class="tab-label">Home</span>
           </button>
           <button type="button" class="tab" data-view="results" role="tab" aria-selected="false">
             <span class="tab-ico" aria-hidden="true">◉</span>
@@ -224,11 +224,26 @@
 
       <!-- TRACK -->
       <main id="view-track" class="layout view">
+        <section class="home-glance" id="home-glance" aria-live="polite">
+          <div class="glance-card">
+            <span class="glance-label">Spent this month</span>
+            <strong id="glance-spent">—</strong>
+          </div>
+          <div class="glance-card">
+            <span class="glance-label">Received</span>
+            <strong id="glance-income" class="good">—</strong>
+          </div>
+          <div class="glance-card">
+            <span class="glance-label">Left / buffer</span>
+            <strong id="glance-net">—</strong>
+          </div>
+        </section>
+
         <section class="panel intro-panel slim">
           <div>
             <p class="eyebrow" id="track-greet">Welcome</p>
             <h1 id="track-heading">Add a spend</h1>
-            <p class="muted" id="next-action">Amount first, then who and category. Insights shows charts.</p>
+            <p class="muted" id="next-action">Amount first, then who and category.</p>
           </div>
         </section>
 
@@ -267,7 +282,7 @@
 
             <details class="more-fields">
               <summary>Date &amp; note</summary>
-              <label>Date <input type="date" id="q-date" required /></label>
+              <label>Date <input type="date" id="q-date" /></label>
               <label>Note <input type="text" id="q-note" placeholder="Optional" /></label>
             </details>
 
@@ -465,7 +480,7 @@
               <tbody id="results-tx-body"></tbody>
             </table>
           </div>
-          <p class="empty-inline" id="results-empty" hidden>No data in this period — add spends on the Add tab.</p>
+          <p class="empty-inline" id="results-empty" hidden>No data in this period — add spends on the Home tab.</p>
           <div class="pager" id="results-pager" hidden>
             <button type="button" class="btn ghost tiny" id="results-prev">Newer</button>
             <span id="results-page-label">Page 1</span>

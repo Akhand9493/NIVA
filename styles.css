@@ -2392,6 +2392,67 @@ dialog#csv-dialog {
   }
 }
 
+.home-glance {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.65rem;
+  margin-bottom: 0.85rem;
+}
+
+.glance-card {
+  padding: 0.85rem 0.9rem;
+  border-radius: 14px;
+  border: 1px solid var(--line);
+  background: rgba(36, 22, 28, 0.88);
+  display: grid;
+  gap: 0.25rem;
+}
+
+.glance-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.glance-card strong {
+  font-family: var(--display);
+  font-size: clamp(1.05rem, 2.8vw, 1.35rem);
+  letter-spacing: -0.03em;
+}
+
+.glance-card strong.good {
+  color: var(--good);
+}
+
+.glance-card strong.bad {
+  color: #ff8b8b;
+}
+
+@media (max-width: 720px) {
+  .home-glance {
+    grid-template-columns: 1fr;
+  }
+
+  .home-glance {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.45rem;
+  }
+
+  .glance-card {
+    padding: 0.65rem 0.55rem;
+  }
+
+  .glance-card strong {
+    font-size: 0.95rem;
+  }
+
+  .glance-label {
+    font-size: 0.62rem;
+  }
+}
+
 /* ——— UX polish: calmer, clearer hierarchy ——— */
 
 body {

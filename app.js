@@ -752,8 +752,8 @@
     }
     if ($("next-action")) {
       $("next-action").textContent = state.transactions.length
-        ? "Amount → who → Save. Check Insights anytime."
-        : "Enter the amount, pick Spent or Received, then Save.";
+        ? "Amount → who → Save. Tap Insights for charts."
+        : "Enter amount, pick Spent or Received, then Save.";
     }
     applyPhoto(state.demoMode ? "" : state.settings.photo);
   }
@@ -985,7 +985,7 @@
     });
     if ($("btn-setup-back")) $("btn-setup-back").hidden = step === 1;
     if ($("btn-setup-next")) {
-      $("btn-setup-next").textContent = step === SETUP_LAST_STEP ? "Done — go to Add" : "Continue";
+      $("btn-setup-next").textContent = step === SETUP_LAST_STEP ? "Done — go to Home" : "Continue";
     }
   }
 
@@ -1273,7 +1273,7 @@
           kind: "tip",
           icon: "i",
           title: "No expenses in this view",
-          body: "Open the Add tab, save a few spends, then come back.",
+          body: "Open Home, save a few spends, then come back.",
         },
       ];
     }
@@ -1473,16 +1473,43 @@
     }
   }
 
+  function monthBoundsISO(anchor = todayISO()) {
+    const d = new Date(`${anchor}T12:00:00`);
+    const start = new Date(d.getFullYear(), d.getMonth(), 1);
+    const end = new Date(d.getFullYear(), d.getMonth() + 1, 0, 23, 59, 59, 999);
+    return { start, end };
+  }
+
+  function renderHomeGlance() {
+    if (!$("glance-spent")) return;
+    const { start, end } = monthBoundsISO();
+    const txs = activeTxs().filter((t) => {
+      const d = Core.fromLocalISO ? Core.fromLocalISO(t.date) : new Date(`${t.date}T12:00:00`);
+      return d >= start && d <= end;
+    });
+    const spent = txs.filter((t) => t.type === "expense").reduce((s, t) => s + t.amount, 0);
+    const income = txs.filter((t) => t.type === "income").reduce((s, t) => s + t.amount, 0);
+    const net = income - spent;
+    $("glance-spent").textContent = money(spent);
+    $("glance-income").textContent = money(income);
+    if ($("glance-net")) {
+      $("glance-net").textContent = `${net >= 0 ? "+" : "−"}${money(Math.abs(net))}`;
+      $("glance-net").classList.toggle("good", net >= 0);
+      $("glance-net").classList.toggle("bad", net < 0);
+    }
+  }
+
   function renderTrack() {
     fillAccountSelect();
     syncTransferFields();
     if (!$("q-date").value) $("q-date").value = todayISO();
     pruneSelection();
+    renderHomeGlance();
     const txs = visibleTrackTxs();
     const paged = pageSlice(txs, state.trackPage);
     state.trackPage = paged.page;
     $("track-count").textContent =
-      state.transactions.length === 1 ? "1 payment saved" : `${state.transactions.length} payments saved`;
+      state.transactions.length === 1 ? "1 entry" : `${state.transactions.length} entries`;
     $("track-empty").hidden = txs.length > 0;
     $("track-tx-body").innerHTML = paged.slice
       .map((t) => {
@@ -1518,11 +1545,11 @@
     const settings = activeSettings();
     const score = txs.length ? healthScore(txs) : null;
 
-    $("health-title").textContent = settings.name ? `${settings.name.split(" ")[0]}'s pulse` : "Your money pulse";
+    $("health-title").textContent = settings.name ? `${settings.name.split(" ")[0]}'s month` : "This period";
     if (score == null) {
       $("health-score").textContent = "—";
       $("health-ring").style.setProperty("--score", "0%");
-      $("health-sub").textContent = "Add payments in Track to see your score.";
+      $("health-sub").textContent = "Add a few spends on Home to see your score.";
       $("health-label").textContent = "Score";
     } else {
       $("health-score").textContent = String(score);

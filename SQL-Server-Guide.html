@@ -1,0 +1,1092 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>SQL Server Guide — Definitions, Syntax, and Examples</title>
+<style>
+  @page { size: A4; margin: 16mm 14mm 18mm 14mm; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: "Segoe UI", Calibri, Arial, sans-serif;
+    font-size: 11pt;
+    line-height: 1.45;
+    color: #1c2430;
+    background: white;
+  }
+  .cover {
+    min-height: 250mm;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    page-break-after: always;
+    padding: 12mm 6mm;
+  }
+  .cover .kicker {
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #1f4e79;
+    font-size: 11pt;
+    font-weight: 700;
+    margin-bottom: 14px;
+  }
+  .cover h1 {
+    font-size: 34pt;
+    line-height: 1.15;
+    margin: 0 0 16px 0;
+    color: #0e2a43;
+    page-break-before: auto;
+    border: none;
+    padding: 0;
+  }
+  .cover p.sub {
+    font-size: 14pt;
+    color: #3d4c5e;
+    max-width: 150mm;
+    margin: 0 0 28px 0;
+  }
+  .cover .meta { color: #5c6b7a; font-size: 11pt; }
+  h1 {
+    font-size: 18pt;
+    color: #0e2a43;
+    margin: 22px 0 8px 0;
+    padding-top: 8px;
+    border-top: 3px solid #1f4e79;
+    page-break-after: avoid;
+    page-break-before: always;
+  }
+  h2 {
+    font-size: 13.5pt;
+    color: #1f4e79;
+    margin: 16px 0 6px 0;
+    page-break-after: avoid;
+  }
+  h3 {
+    font-size: 12pt;
+    color: #24527a;
+    margin: 12px 0 4px 0;
+    page-break-after: avoid;
+  }
+  p { margin: 0 0 8px 0; }
+  ul, ol { margin: 4px 0 10px 0; padding-left: 20px; }
+  li { margin: 0 0 4px 0; }
+  strong { color: #0e2a43; }
+  code {
+    font-family: Consolas, "Cascadia Mono", "Courier New", monospace;
+    font-size: 0.92em;
+    background: #eef3f8;
+    padding: 0 3px;
+    border-radius: 2px;
+  }
+  pre {
+    font-family: Consolas, "Cascadia Mono", "Courier New", monospace;
+    font-size: 8.4pt;
+    line-height: 1.35;
+    background: #f4f7fb;
+    border: 1px solid #d5deea;
+    border-left: 4px solid #1f4e79;
+    padding: 8px 10px;
+    margin: 6px 0 12px 0;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    page-break-inside: avoid;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 6px 0 12px 0;
+    font-size: 9.5pt;
+    page-break-inside: avoid;
+  }
+  th, td {
+    border: 1px solid #c9d4e3;
+    padding: 5px 7px;
+    text-align: left;
+    vertical-align: top;
+  }
+  th { background: #1f4e79; color: white; font-weight: 600; }
+  tr:nth-child(even) td { background: #f6f9fc; }
+  .note {
+    background: #f7f4ea;
+    border-left: 4px solid #b8860b;
+    padding: 8px 10px;
+    margin: 8px 0 12px 0;
+    page-break-inside: avoid;
+  }
+  .toc { page-break-after: always; }
+  .toc h1 { page-break-before: auto; }
+  .toc ol { columns: 1; padding-left: 22px; }
+  .toc li { margin-bottom: 3px; }
+  .toc a { color: #1f4e79; text-decoration: none; }
+</style>
+</head>
+<body>
+
+<section class="cover">
+  <div class="kicker">Study guide</div>
+  <h1>SQL Server<br/>from definition<br/>to example</h1>
+  <p class="sub">Stored procedures, functions, triggers, indexes, files, T-SQL, window functions, jobs, high availability, joins, and how SQL Server compares with other databases.</p>
+  <p class="meta">Prepared 28 September 2026</p>
+</section>
+
+<section class="toc">
+  <h1>Contents</h1>
+  <ol>
+    <li>Stored procedure</li>
+    <li>Function and user-defined function</li>
+    <li>Trigger</li>
+    <li>Temporary table</li>
+    <li>Indexes — clustered, nonclustered, columnstore, CHARINDEX, PATINDEX</li>
+    <li>MDF, NDF, and LDF</li>
+    <li>NVARCHAR and all common data types</li>
+    <li>SQL syntax</li>
+    <li>T-SQL syntax</li>
+    <li>Window functions</li>
+    <li>Find duplicates</li>
+    <li>GROUP BY and HAVING</li>
+    <li>SQL Server Agent jobs</li>
+    <li>Log shipping</li>
+    <li>JDBC connection</li>
+    <li>Generate scripts in SSMS</li>
+    <li>SSMS working guide</li>
+    <li>Stored procedure optimization</li>
+    <li>Execution plan</li>
+    <li>Linked server and linked list</li>
+    <li>Magic tables</li>
+    <li>Replication</li>
+    <li>SQL Server, PostgreSQL, MySQL, Snowflake, Redshift, Azure SQL, Azure Synapse</li>
+    <li>DBMS and RDBMS</li>
+    <li>Codd’s rules and Boyce-Codd normal form</li>
+    <li>ACID</li>
+    <li>View and materialized view</li>
+    <li>Local variables and global variables</li>
+    <li>Joins, join hints, and physical joins</li>
+    <li>MERGE</li>
+    <li>Common table expression</li>
+    <li>BULK INSERT</li>
+  </ol>
+  <div class="note">
+    Two names from the original list are mapped here. <strong>Pipe index</strong> is treated as <strong>PATINDEX</strong> (pattern search). <strong>Linked list</strong> in a SQL Server syllabus is usually <strong>linked server</strong>; both are covered. <strong>Boyce-Codd</strong> and <strong>Codd’s rules</strong> are both covered.
+  </div>
+</section>
+
+<h1>1. Stored procedure</h1>
+<p>A <strong>stored procedure</strong> is a named batch of T-SQL saved in the database and executed with <code>EXEC</code>. The engine can reuse an execution plan, you pass parameters, and you can grant permission on the procedure without granting direct table access.</p>
+<p>Use it for business operations that run often: place an order, close a month, load a file, or return a shaped result set.</p>
+<pre>CREATE OR ALTER PROCEDURE dbo.usp_GetOrders
+    @CustomerId int,
+    @FromDate   date = '2020-01-01'
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT OrderId, OrderDate, Amount
+    FROM dbo.Orders
+    WHERE CustomerId = @CustomerId
+      AND OrderDate &gt;= @FromDate
+    ORDER BY OrderDate DESC;
+END;
+GO
+
+EXEC dbo.usp_GetOrders @CustomerId = 42, @FromDate = '2026-01-01';</pre>
+<p>A procedure can contain <code>INSERT</code>, <code>UPDATE</code>, <code>DELETE</code>, transactions, error handling, and multiple result sets. It does not have to return a table. It can return an integer status with <code>RETURN</code> (often 0 means success).</p>
+<pre>CREATE OR ALTER PROCEDURE dbo.usp_CloseOrder
+    @OrderId int
+AS
+BEGIN
+    SET NOCOUNT ON;
+    SET XACT_ABORT ON;
+
+    BEGIN TRY
+        BEGIN TRAN;
+
+        UPDATE dbo.Orders
+        SET Status = 'Closed', ClosedAt = SYSUTCDATETIME()
+        WHERE OrderId = @OrderId
+          AND Status = 'Open';
+
+        IF @@ROWCOUNT = 0
+            THROW 50001, 'Order was not open.', 1;
+
+        COMMIT;
+        RETURN 0;
+    END TRY
+    BEGIN CATCH
+        IF @@TRANCOUNT &gt; 0 ROLLBACK;
+        THROW;
+    END CATCH
+END;</pre>
+
+<h1>2. Function and user-defined function</h1>
+<p>A <strong>function</strong> returns a value or a table and is used inside a statement: <code>SELECT</code>, <code>WHERE</code>, or a computed column. A <strong>user-defined function (UDF)</strong> is one you write. Built-in functions (<code>GETDATE</code>, <code>LEN</code>, <code>SUM</code>) ship with the engine.</p>
+<table>
+  <tr><th>Kind</th><th>Returns</th><th>Can change data?</th><th>Typical use</th></tr>
+  <tr><td>Scalar</td><td>One value</td><td>No</td><td>Format, calculate, classify a row</td></tr>
+  <tr><td>Inline table-valued</td><td>A SELECT</td><td>No</td><td>Reusable filtered or joined set. Best performance.</td></tr>
+  <tr><td>Multi-statement table-valued</td><td>A table you fill</td><td>No</td><td>Complex shaping. Often slower.</td></tr>
+</table>
+<pre>-- Scalar
+CREATE OR ALTER FUNCTION dbo.fn_FullName
+    (@First nvarchar(50), @Last nvarchar(50))
+RETURNS nvarchar(101)
+AS
+BEGIN
+    RETURN CONCAT(@First, N' ', @Last);
+END;
+GO
+
+SELECT dbo.fn_FullName(N'Ada', N'Lovelace') AS FullName;
+
+-- Inline table-valued (prefer this kind)
+CREATE OR ALTER FUNCTION dbo.fn_OrdersFor (@CustomerId int)
+RETURNS TABLE
+AS
+RETURN
+(
+    SELECT OrderId, OrderDate, Amount
+    FROM dbo.Orders
+    WHERE CustomerId = @CustomerId
+);
+GO
+
+SELECT * FROM dbo.fn_OrdersFor(42);</pre>
+<p>A procedure is executed with <code>EXEC</code>. A function is called inside SQL. A function must return something and cannot change permanent tables, start an explicit transaction, or use arbitrary side effects. Inline table-valued functions optimize like views. Scalar functions called once per row can hurt plans. SQL Server 2019 and later can inline many scalar UDFs, and an inline TVF is still the safer design.</p>
+
+<h1>3. Trigger</h1>
+<p>A <strong>trigger</strong> is code the engine runs automatically when a table, view, database, or server event occurs.</p>
+<p>DML triggers are <code>AFTER INSERT</code>, <code>AFTER UPDATE</code>, <code>AFTER DELETE</code>, or <code>INSTEAD OF</code>. An <code>INSTEAD OF</code> trigger replaces the original write and is common on views.</p>
+<pre>CREATE OR ALTER TRIGGER dbo.tr_Orders_Audit
+ON dbo.Orders
+AFTER UPDATE
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    INSERT INTO dbo.OrderAudit (OrderId, OldAmount, NewAmount, ChangedAt)
+    SELECT d.OrderId, d.Amount, i.Amount, SYSUTCDATETIME()
+    FROM inserted AS i
+    JOIN deleted  AS d ON d.OrderId = i.OrderId
+    WHERE d.Amount &lt;&gt; i.Amount;
+END;</pre>
+<p><code>inserted</code> and <code>deleted</code> are the magic tables. They hold every row the statement affected, not one row at a time. Write triggers as set-based code.</p>
+<p>Use a trigger for auditing, for a rule a constraint cannot express, or to keep a derived table in step. Prefer constraints, computed columns, and explicit procedures when those can do the job, because a trigger is invisible to the person writing the <code>UPDATE</code>.</p>
+<p>DDL triggers fire on <code>CREATE</code>, <code>ALTER</code>, and <code>DROP</code>. Logon triggers fire when a session starts.</p>
+
+<h1>4. Temporary table</h1>
+<p>A <strong>temporary table</strong> lives in <code>tempdb</code> and disappears when the session, or the procedure that created it, ends.</p>
+<table>
+  <tr><th>Object</th><th>Scope</th><th>Name</th></tr>
+  <tr><td>Local temp table</td><td>This session</td><td>#Orders</td></tr>
+  <tr><td>Global temp table</td><td>All sessions, until the creator disconnects and nobody else is using it</td><td>##Orders</td></tr>
+  <tr><td>Table variable</td><td>The batch or procedure</td><td>@Orders</td></tr>
+</table>
+<pre>CREATE TABLE #TopCustomers
+(
+    CustomerId int PRIMARY KEY,
+    TotalAmount decimal(18,2) NOT NULL
+);
+
+INSERT INTO #TopCustomers (CustomerId, TotalAmount)
+SELECT CustomerId, SUM(Amount)
+FROM dbo.Orders
+GROUP BY CustomerId
+HAVING SUM(Amount) &gt; 10000;
+
+SELECT c.CustomerName, t.TotalAmount
+FROM #TopCustomers AS t
+JOIN dbo.Customers AS c ON c.CustomerId = t.CustomerId;
+
+DROP TABLE #TopCustomers;  -- also dropped at end of session</pre>
+<p><code>#temp</code> tables can have indexes and statistics, so the optimizer can estimate large sets. Table variables historically had a one-row estimate. Newer SQL Server can defer compilation for them, and for a large intermediate set a <code>#temp</code> table is still the usual choice. A global <code>##temp</code> table is visible to every session and is rarely the right tool.</p>
+
+<h1>5. Indexes</h1>
+<p>An <strong>index</strong> is a structure that lets SQL Server find rows without reading the whole table. The classic structure is a B-tree: sorted keys, with leaf pages holding either the full row or a pointer to it.</p>
+
+<h2>Clustered index</h2>
+<p>The <strong>clustered index</strong> is the table’s physical sort order. Leaf pages are the data rows. A table can have one clustered index. A primary key creates one by default unless you specify <code>NONCLUSTERED</code>.</p>
+<pre>CREATE CLUSTERED INDEX CX_Orders_OrderDate
+ON dbo.Orders (OrderDate, OrderId);</pre>
+<p>A good clustered key is narrow, unique, and ever-increasing, such as an <code>OrderId</code> identity, or a date plus an id. A random <code>uniqueidentifier</code> as the clustered key inserts new rows into the middle of the leaf and splits pages.</p>
+
+<h2>Nonclustered index</h2>
+<p>A <strong>nonclustered index</strong> is a separate sorted copy of selected columns, plus a pointer back to the clustered key (or a row id if the table is a heap). A table can have many.</p>
+<pre>CREATE NONCLUSTERED INDEX IX_Orders_Customer
+ON dbo.Orders (CustomerId, OrderDate)
+INCLUDE (Amount, Status);</pre>
+<p>Key columns (<code>CustomerId</code>, <code>OrderDate</code>) support seek and order. <code>INCLUDE</code> columns sit at the leaf so the query can be covered without going back to the base table. That extra trip is a <strong>key lookup</strong>.</p>
+<p>A <strong>heap</strong> is a table with no clustered index. Nonclustered indexes then point at a row identifier. Most OLTP tables should have a clustered index.</p>
+
+<h2>Columnstore index</h2>
+<p>A <strong>columnstore index</strong> stores each column in its own compressed segments, in batches of about a million rows. Analytics queries that scan a few columns of a huge table read far less data than a rowstore B-tree.</p>
+<pre>-- Whole table stored as columns. Best for fact tables you mostly append to.
+CREATE CLUSTERED COLUMNSTORE INDEX CCI_FactSales
+ON dbo.FactSales;
+
+-- Extra analytics index on a rowstore OLTP table.
+CREATE NONCLUSTERED COLUMNSTORE INDEX NCCI_Orders_Analytics
+ON dbo.Orders (OrderDate, CustomerId, Amount);</pre>
+<p>Rowstore answers “find this order.” Columnstore answers “sum amount by month across 200 million rows.” A clustered columnstore makes the columnstore the table itself. Deletes and updates are kept in a small rowstore delta store and a delete bitmap, then compressed later by the tuple mover.</p>
+
+<h2>CHARINDEX and PATINDEX</h2>
+<p>These are string functions, not index objects. They return the starting position of a match, or 0 when there is no match. PATINDEX is the pattern form that matches the phrase “pipe index” in the original topic list.</p>
+<pre>-- CHARINDEX: exact substring. Optional start position.
+SELECT CHARINDEX(N'@', N'ada@example.com');          -- 4
+SELECT CHARINDEX(N'ex', N'ada@example.com', 5);      -- 5
+
+-- PATINDEX: pattern with % and _, same wildcards as LIKE
+SELECT PATINDEX(N'%[0-9]%', N'INV-2048');            -- 5, first digit
+SELECT PATINDEX(N'%example%', N'ada@example.com');   -- 5</pre>
+<p><code>CHARINDEX</code> searches for a literal. <code>PATINDEX</code> searches for a pattern. Neither uses a B-tree to speed a search inside the string. A leading-wildcard <code>LIKE</code> or <code>CHARINDEX</code> against a column is usually a scan.</p>
+
+<h2>Other indexes</h2>
+<pre>-- Unique
+CREATE UNIQUE NONCLUSTERED INDEX UX_Customers_Email
+ON dbo.Customers (Email);
+
+-- Filtered: only rows that match the predicate
+CREATE NONCLUSTERED INDEX IX_Orders_Open
+ON dbo.Orders (CustomerId)
+WHERE Status = 'Open';
+
+-- Primary key (constraint plus index)
+ALTER TABLE dbo.Orders
+ADD CONSTRAINT PK_Orders PRIMARY KEY CLUSTERED (OrderId);</pre>
+
+<h1>6. MDF, NDF, and LDF</h1>
+<p>SQL Server stores a database as files on disk.</p>
+<table>
+  <tr><th>Extension</th><th>Role</th><th>How many</th></tr>
+  <tr><td>MDF</td><td>Primary data file. Holds system tables and, by default, your data. The database cannot start without it.</td><td>Exactly one</td></tr>
+  <tr><td>NDF</td><td>Secondary data file. Extra room, often on another disk or in another filegroup.</td><td>Zero or more</td></tr>
+  <tr><td>LDF</td><td>Transaction log. Records every change so SQL Server can recover, roll back, and ship logs.</td><td>At least one</td></tr>
+</table>
+<pre>CREATE DATABASE Sales
+ON PRIMARY
+(
+    NAME = Sales_Data,
+    FILENAME = N'D:\Data\Sales.mdf',
+    SIZE = 200MB, FILEGROWTH = 64MB
+),
+FILEGROUP Archive
+(
+    NAME = Sales_Archive,
+    FILENAME = N'E:\Data\Sales_Archive.ndf',
+    SIZE = 500MB, FILEGROWTH = 128MB
+)
+LOG ON
+(
+    NAME = Sales_Log,
+    FILENAME = N'L:\Logs\Sales.ldf',
+    SIZE = 100MB, FILEGROWTH = 64MB
+);</pre>
+<p>Put large, cold tables on a filegroup whose files are NDF files. Put the log on its own fast disk. The log is written sequentially. Data files are read and written more randomly. Do not delete an MDF or LDF from disk while SQL Server has the database online. Detach, back up, or drop the database first.</p>
+<pre>SELECT name, type_desc, physical_name, size * 8 / 1024 AS size_mb
+FROM sys.database_files;</pre>
+
+<h1>7. NVARCHAR and the data types</h1>
+<p><strong>nvarchar</strong> stores Unicode text in UTF-16. Each character uses 2 bytes. <code>nvarchar(100)</code> holds up to 100 characters. <code>nvarchar(max)</code> holds up to about 2 GB. Use <code>nvarchar</code> when names, addresses, or product text can contain characters outside one code page. Use <code>varchar</code> when you have confirmed the data is a single code page and the space savings matter.</p>
+<p>Prefix Unicode literals with <code>N</code>, as in <code>N'München'</code>.</p>
+
+<h2>Integers</h2>
+<table>
+  <tr><th>Type</th><th>Range</th><th>Bytes</th></tr>
+  <tr><td>bit</td><td>0, 1, or NULL</td><td>1 bit, packed</td></tr>
+  <tr><td>tinyint</td><td>0 to 255</td><td>1</td></tr>
+  <tr><td>smallint</td><td>−32,768 to 32,767</td><td>2</td></tr>
+  <tr><td>int</td><td>about ±2.1 billion</td><td>4</td></tr>
+  <tr><td>bigint</td><td>about ±9×10^18</td><td>8</td></tr>
+</table>
+
+<h2>Exact and approximate numbers</h2>
+<p><code>decimal(p,s)</code> and <code>numeric(p,s)</code> are exact. <code>p</code> is total digits (1–38). <code>s</code> is digits after the decimal. Use these for money when you want full control. <code>money</code> (8 bytes) and <code>smallmoney</code> exist and round to 4 decimal places. Many teams prefer <code>decimal(19,4)</code>.</p>
+<p><code>float(n)</code> and <code>real</code> (which is <code>float(24)</code>) are binary floating point. Do not use them for currency.</p>
+
+<h2>Date and time</h2>
+<table>
+  <tr><th>Type</th><th>What it stores</th></tr>
+  <tr><td>date</td><td>Calendar date</td></tr>
+  <tr><td>time(p)</td><td>Time of day, precision 0–7</td></tr>
+  <tr><td>datetime2(p)</td><td>Date and time. Preferred for new work.</td></tr>
+  <tr><td>datetimeoffset(p)</td><td>Date, time, and a time-zone offset</td></tr>
+  <tr><td>datetime</td><td>Older type. About 3.33 ms accuracy, years 1753–9999.</td></tr>
+  <tr><td>smalldatetime</td><td>Minute accuracy, years 1900–2079</td></tr>
+</table>
+
+<h2>Text</h2>
+<table>
+  <tr><th>Type</th><th>Character set</th><th>Length</th></tr>
+  <tr><td>char(n)</td><td>Code page</td><td>Fixed n</td></tr>
+  <tr><td>varchar(n), varchar(max)</td><td>Code page</td><td>Variable</td></tr>
+  <tr><td>nchar(n)</td><td>Unicode</td><td>Fixed n</td></tr>
+  <tr><td>nvarchar(n), nvarchar(max)</td><td>Unicode</td><td>Variable</td></tr>
+</table>
+<p><code>text</code>, <code>ntext</code>, and <code>image</code> are legacy. Use <code>varchar(max)</code>, <code>nvarchar(max)</code>, and <code>varbinary(max)</code>.</p>
+
+<h2>Binary and other types</h2>
+<p>Binary types are <code>binary(n)</code>, <code>varbinary(n)</code>, and <code>varbinary(max)</code>.</p>
+<table>
+  <tr><th>Type</th><th>Use</th></tr>
+  <tr><td>uniqueidentifier</td><td>GUID, 16 bytes</td></tr>
+  <tr><td>rowversion (alias timestamp)</td><td>Automatic 8-byte row version on each change. It is not a clock time.</td></tr>
+  <tr><td>xml</td><td>Typed or untyped XML, with optional XML indexes</td></tr>
+  <tr><td>json</td><td>Native JSON on newer engines. Otherwise store JSON in nvarchar(max) and use OPENJSON and JSON_VALUE.</td></tr>
+  <tr><td>sql_variant</td><td>Can hold almost any scalar. Awkward to query, index, and compare.</td></tr>
+  <tr><td>hierarchyid</td><td>A path in a tree</td></tr>
+  <tr><td>geometry, geography</td><td>Spatial data</td></tr>
+  <tr><td>vector</td><td>Embeddings, on very new SQL Server and Azure SQL builds</td></tr>
+</table>
+
+<h1>8. SQL syntax</h1>
+<p>These statements are the core of SQL. They work across SQL Server, PostgreSQL, and MySQL with small dialect differences.</p>
+<pre>-- Filter, project, sort
+SELECT CustomerId, SUM(Amount) AS TotalAmount
+FROM dbo.Orders
+WHERE OrderDate &gt;= '2026-01-01'
+  AND Status IN ('Open', 'Shipped')
+GROUP BY CustomerId
+HAVING SUM(Amount) &gt; 1000
+ORDER BY TotalAmount DESC
+OFFSET 0 ROWS FETCH NEXT 50 ROWS ONLY;
+
+-- Change data
+INSERT INTO dbo.Customers (CustomerName, Email)
+VALUES (N'Ada', N'ada@example.com');
+
+UPDATE dbo.Orders SET Status = 'Shipped' WHERE OrderId = 10;
+
+DELETE FROM dbo.Orders WHERE OrderId = 10;
+
+-- Define
+CREATE TABLE dbo.Orders
+(
+    OrderId    int IDENTITY(1,1) NOT NULL
+                 CONSTRAINT PK_Orders PRIMARY KEY,
+    CustomerId int NOT NULL,
+    OrderDate  date NOT NULL
+                 CONSTRAINT DF_Orders_OrderDate
+                 DEFAULT (CAST(SYSDATETIME() AS date)),
+    Amount     decimal(18,2) NOT NULL,
+    Status     varchar(20) NOT NULL,
+    CONSTRAINT FK_Orders_Customers
+        FOREIGN KEY (CustomerId) REFERENCES dbo.Customers (CustomerId),
+    CONSTRAINT CK_Orders_Amount CHECK (Amount &gt;= 0)
+);
+
+-- Remove
+TRUNCATE TABLE dbo.StagingOrders;  -- deallocates pages; no WHERE
+DROP TABLE dbo.StagingOrders;</pre>
+<p>The logical order of a <code>SELECT</code> is: <code>FROM</code>, <code>WHERE</code>, <code>GROUP BY</code>, <code>HAVING</code>, <code>SELECT</code>, <code>ORDER BY</code>, then <code>OFFSET/FETCH</code>. A <code>SELECT</code> alias is not yet in scope in <code>WHERE</code>. It is in scope in <code>ORDER BY</code>.</p>
+<p>Predicates: <code>=</code>, <code>&lt;&gt;</code>, <code>&lt;</code>, <code>&gt;</code>, <code>&lt;=</code>, <code>&gt;=</code>, <code>IN</code>, <code>BETWEEN</code>, <code>LIKE</code>, <code>IS NULL</code>, <code>IS NOT NULL</code>, <code>EXISTS</code>, <code>AND</code>, <code>OR</code>, <code>NOT</code>.</p>
+<p><code>NULL</code> means unknown. <code>NULL = NULL</code> is unknown, so it does not pass a <code>WHERE</code> test. Compare with <code>IS NULL</code>.</p>
+
+<h1>9. T-SQL syntax</h1>
+<p><strong>T-SQL</strong> is Microsoft’s extension of SQL: variables, flow control, error handling, procedures, and system procedures. The SQL in the previous section is a subset of T-SQL.</p>
+<pre>DECLARE @CustomerId int = 42;
+DECLARE @Total decimal(18,2);
+
+SELECT @Total = SUM(Amount)
+FROM dbo.Orders
+WHERE CustomerId = @CustomerId;
+
+IF @Total IS NULL
+    PRINT 'No orders';
+ELSE IF @Total &gt; 10000
+    PRINT 'High value';
+ELSE
+    PRINT 'Standard';
+
+WHILE @CustomerId &lt; 50
+BEGIN
+    SET @CustomerId += 1;
+    IF @CustomerId = 45 CONTINUE;
+    BREAK;
+END
+
+BEGIN TRY
+    BEGIN TRAN;
+    -- work
+    COMMIT;
+END TRY
+BEGIN CATCH
+    IF @@TRANCOUNT &gt; 0 ROLLBACK;
+    THROW;
+END CATCH</pre>
+<pre>-- Dynamic SQL, parameterized
+DECLARE @sql nvarchar(max) =
+    N'SELECT * FROM dbo.Orders WHERE CustomerId = @id';
+EXEC sys.sp_executesql @sql, N'@id int', @id = 42;
+
+-- Output from a DML statement
+INSERT INTO dbo.Customers (CustomerName)
+OUTPUT inserted.CustomerId, inserted.CustomerName
+VALUES (N'Grace');
+
+-- Exists test
+IF OBJECT_ID(N'dbo.Orders', N'U') IS NOT NULL
+    DROP TABLE dbo.Orders;
+
+SET NOCOUNT ON;
+SET XACT_ABORT ON;
+SET TRANSACTION ISOLATION LEVEL READ COMMITTED;</pre>
+<p>Batches are separated by <code>GO</code>. <code>GO</code> is a client command, not a T-SQL keyword. Variables die at the end of the batch. <code>SET XACT_ABORT ON</code> rolls back the transaction on most runtime errors.</p>
+
+<h1>10. Window functions</h1>
+<p>A <strong>window function</strong> computes a value across a set of rows related to the current row, without collapsing those rows the way <code>GROUP BY</code> does.</p>
+<pre>SELECT
+    OrderId,
+    CustomerId,
+    OrderDate,
+    Amount,
+    SUM(Amount) OVER (PARTITION BY CustomerId) AS CustomerTotal,
+    ROW_NUMBER() OVER (
+        PARTITION BY CustomerId ORDER BY OrderDate DESC
+    ) AS RecentRank,
+    LAG(Amount) OVER (
+        PARTITION BY CustomerId ORDER BY OrderDate
+    ) AS PrevAmount,
+    LEAD(Amount) OVER (
+        PARTITION BY CustomerId ORDER BY OrderDate
+    ) AS NextAmount,
+    SUM(Amount) OVER (
+        PARTITION BY CustomerId
+        ORDER BY OrderDate
+        ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
+    ) AS RunningTotal
+FROM dbo.Orders;</pre>
+<p>Families:</p>
+<ul>
+  <li><strong>Ranking:</strong> <code>ROW_NUMBER</code>, <code>RANK</code>, <code>DENSE_RANK</code>, <code>NTILE(n)</code></li>
+  <li><strong>Aggregate over a window:</strong> <code>SUM</code>, <code>COUNT</code>, <code>AVG</code>, <code>MIN</code>, <code>MAX</code></li>
+  <li><strong>Offset:</strong> <code>LAG</code>, <code>LEAD</code>, <code>FIRST_VALUE</code>, <code>LAST_VALUE</code></li>
+  <li><strong>Distribution:</strong> <code>PERCENT_RANK</code>, <code>CUME_DIST</code>, <code>PERCENTILE_CONT</code>, <code>PERCENTILE_DISC</code></li>
+</ul>
+<p><code>PARTITION BY</code> resets the window per group. <code>ORDER BY</code> defines sequence inside the partition. The frame (<code>ROWS</code> or <code>RANGE</code>) defines which neighbors participate. When you supply <code>ORDER BY</code> and no frame, the default is <code>RANGE UNBOUNDED PRECEDING TO CURRENT ROW</code>, which includes peers that tie on the order key. Prefer <code>ROWS</code> when you want a physical running total.</p>
+<p><code>RANK</code> skips numbers after a tie (1, 1, 3). <code>DENSE_RANK</code> does not (1, 1, 2). <code>ROW_NUMBER</code> never ties. If its <code>ORDER BY</code> is not unique, which row gets which number is arbitrary until you add a unique tie-break such as the primary key.</p>
+
+<h1>11. Find duplicates</h1>
+<p>Duplicates mean more than one row shares the columns you care about.</p>
+<pre>-- Which values are duplicated
+SELECT Email, COUNT(*) AS Cnt
+FROM dbo.Customers
+GROUP BY Email
+HAVING COUNT(*) &gt; 1;
+
+-- Show every duplicate row
+WITH d AS
+(
+    SELECT
+        CustomerId,
+        Email,
+        COUNT(*) OVER (PARTITION BY Email) AS Cnt
+    FROM dbo.Customers
+)
+SELECT CustomerId, Email
+FROM d
+WHERE Cnt &gt; 1
+ORDER BY Email, CustomerId;</pre>
+<p>To keep one row and delete the rest, name the keeper explicitly. Run the <code>SELECT</code> form first and look at the rows.</p>
+<pre>WITH ranked AS
+(
+    SELECT
+        CustomerId,
+        ROW_NUMBER() OVER (
+            PARTITION BY Email ORDER BY CustomerId
+        ) AS rn
+    FROM dbo.Customers
+)
+DELETE FROM ranked
+WHERE rn &gt; 1;</pre>
+<p>SQL Server allows deleting through a CTE when the CTE maps to one base table.</p>
+
+<h1>12. GROUP BY and HAVING</h1>
+<p><code>GROUP BY</code> collapses rows into groups. Every selected column is either in the <code>GROUP BY</code> or inside an aggregate (<code>SUM</code>, <code>COUNT</code>, <code>MIN</code>, <code>MAX</code>, <code>AVG</code>, <code>STRING_AGG</code>).</p>
+<p><code>WHERE</code> filters rows before grouping. <code>HAVING</code> filters groups after aggregation.</p>
+<pre>SELECT CustomerId, Status, COUNT(*) AS Orders, SUM(Amount) AS Total
+FROM dbo.Orders
+WHERE OrderDate &gt;= '2026-01-01'
+GROUP BY CustomerId, Status
+HAVING SUM(Amount) &gt; 5000
+   AND COUNT(*) &gt;= 3;</pre>
+<p><code>GROUPING SETS</code>, <code>ROLLUP</code>, and <code>CUBE</code> add subtotals.</p>
+<pre>SELECT CustomerId, Status, SUM(Amount) AS Total
+FROM dbo.Orders
+GROUP BY GROUPING SETS
+(
+    (CustomerId, Status),
+    (CustomerId),
+    ()
+);</pre>
+
+<h1>13. SQL Server Agent jobs</h1>
+<p>A <strong>job</strong> is scheduled work run by <strong>SQL Server Agent</strong>, a separate Windows service. A job has steps (T-SQL, PowerShell, SSIS, or an operating-system command), schedules, and notifications.</p>
+<p>In SSMS: SQL Server Agent, then Jobs, then New Job.</p>
+<pre>USE msdb;
+GO
+
+EXEC dbo.sp_add_job
+    @job_name = N'Nightly order archive',
+    @enabled = 1;
+
+EXEC dbo.sp_add_jobstep
+    @job_name = N'Nightly order archive',
+    @step_name = N'Archive',
+    @subsystem = N'TSQL',
+    @database_name = N'Sales',
+    @command = N'EXEC dbo.usp_ArchiveClosedOrders;',
+    @retry_attempts = 2,
+    @retry_interval = 5;
+
+EXEC dbo.sp_add_schedule
+    @schedule_name = N'Every night 01:00',
+    @freq_type = 4,              -- daily
+    @freq_interval = 1,
+    @active_start_time = 010000; -- HHMMSS
+
+EXEC dbo.sp_attach_schedule
+    @job_name = N'Nightly order archive',
+    @schedule_name = N'Every night 01:00';
+
+EXEC dbo.sp_add_jobserver
+    @job_name = N'Nightly order archive';</pre>
+<p>Agent must be running. Jobs live in <code>msdb</code>. History is on the job’s History page and in <code>msdb.dbo.sysjobhistory</code>. Set a step’s failure action to quit the job reporting failure when a failed step should stop the rest of the job.</p>
+
+<h1>14. Log shipping</h1>
+<p><strong>Log shipping</strong> keeps a warm copy of a database on another server by a repeating cycle:</p>
+<ol>
+  <li><strong>Backup job</strong> on the primary: <code>BACKUP LOG</code> on a schedule, often every few minutes.</li>
+  <li><strong>Copy job</strong> on the secondary: copy those transaction-log backup files.</li>
+  <li><strong>Restore job</strong> on the secondary: <code>RESTORE LOG ... WITH NORECOVERY</code>, or <code>STANDBY</code> if you want read-only access between restores.</li>
+</ol>
+<p>The secondary stays in a restoring state. <code>RESTORE DATABASE ... WITH RECOVERY</code> brings it online and ends the shipping chain. An optional monitor server records backup and restore age so you can alert when the secondary falls behind.</p>
+<p>Use log shipping for disaster recovery and for a reporting copy that can be minutes behind. It is not synchronous. <strong>Always On availability groups</strong> are the newer high-availability feature: synchronous or asynchronous replicas, readable secondaries, and automatic failover. Log shipping remains simple and works on editions that do not include availability groups.</p>
+<p>Setup is under the database, Tasks, Ship Transaction Logs, or through <code>msdb</code> procedures such as <code>sp_add_log_shipping_primary_database</code>.</p>
+
+<h1>15. JDBC connection</h1>
+<p><strong>JDBC</strong> is Java’s database API. The Microsoft driver class is <code>com.microsoft.sqlserver.jdbc.SQLServerDriver</code>. Add the <code>mssql-jdbc</code> jar to the project.</p>
+<pre>import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+
+public class SqlExample {
+    public static void main(String[] args) throws Exception {
+        String url = "jdbc:sqlserver://localhost:1433;"
+            + "databaseName=Sales;"
+            + "encrypt=true;"
+            + "trustServerCertificate=true;"; // local dev only
+
+        try (Connection conn = DriverManager.getConnection(
+                 url, "app_user", "secret");
+             PreparedStatement ps = conn.prepareStatement(
+                 "SELECT OrderId, Amount FROM dbo.Orders "
+               + "WHERE CustomerId = ?")) {
+
+            ps.setInt(1, 42);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    System.out.println(
+                        rs.getInt("OrderId") + " "
+                        + rs.getBigDecimal("Amount"));
+                }
+            }
+        }
+    }
+}</pre>
+<p>Use <code>PreparedStatement</code> and placeholders. Concatenating user input into SQL is how SQL injection happens. For production, install a real TLS certificate and remove <code>trustServerCertificate</code>. An application should take connections from a pool such as HikariCP. Opening DriverManager once per request is fine for a demo and expensive in a service.</p>
+<pre>try (CallableStatement cs = conn.prepareCall(
+        "{call dbo.usp_GetOrders(?, ?)}")) {
+    cs.setInt(1, 42);
+    cs.setDate(2, java.sql.Date.valueOf("2026-01-01"));
+    try (ResultSet rs = cs.executeQuery()) { /* read rows */ }
+}</pre>
+
+<h1>16. Generate scripts in SSMS</h1>
+<p>SSMS can emit <code>CREATE</code> and <code>INSERT</code> script from objects that already exist.</p>
+<p><strong>One object.</strong> Right-click the table, procedure, or view, then Script object as, then CREATE To, then New Query Editor Window.</p>
+<p><strong>Many objects or data.</strong></p>
+<ol>
+  <li>Right-click the database, then Tasks, then Generate Scripts.</li>
+  <li>Choose specific objects or the whole database.</li>
+  <li>Open Advanced.</li>
+  <li>Set Types of data to script to Schema only, Data only, or Schema and data.</li>
+  <li>Set Script Indexes, Script Foreign Keys, and Script DROP and CREATE as needed.</li>
+  <li>Save to a file, the clipboard, or a new query window.</li>
+</ol>
+<p>To script a change you are about to make in the table designer, enable Tools, Options, Designers, Auto generate change scripts, or use Generate Change Script before you save. A script of every row is not a recovery plan for a large database. A backup is.</p>
+
+<h1>17. SSMS working guide</h1>
+<p><strong>SQL Server Management Studio</strong> is the desktop client for SQL Server and Azure SQL.</p>
+<p><strong>Connect.</strong> Provide the server name and authentication (Windows or a SQL login), and optionally a database. Recent connections stay on the login dialog. Registered Servers stores groups of servers.</p>
+<p><strong>Object Explorer.</strong> The tree holds databases, tables, views, programmability (procedures and functions), security, and SQL Server Agent. Right-click is where Script, Design, Properties, and Tasks live. Object Explorer Details (F7) is a grid of the current node.</p>
+<p><strong>Query window.</strong> New Query. The database dropdown sets the database for the batch. F5 executes. Highlight a portion to run only that text. <code>GO</code> splits batches.</p>
+<p><strong>Results.</strong> Results to Grid is Ctrl+D. Results to Text is Ctrl+T. The Messages tab shows row counts and <code>PRINT</code>. Sorting a column header sorts the client-side grid. It does not change the query.</p>
+<p><strong>Execution plan.</strong> Ctrl+L is the estimated plan. The query is not run. Ctrl+M includes the actual plan on the next run. Read operators from right to left and top to bottom. A thicker arrow means more rows.</p>
+<p>Other tools:</p>
+<ul>
+  <li><strong>Activity Monitor</strong> shows who is running, what they are waiting on, and expensive queries.</li>
+  <li><strong>Database diagrams</strong> picture foreign keys. Useful for learning a small schema.</li>
+  <li><strong>Template Explorer</strong> holds parameterized script stubs.</li>
+  <li><strong>SQLCMD mode</strong> (Query menu) lets a script use <code>:setvar</code>.</li>
+  <li><strong>IntelliSense:</strong> Ctrl+Space. Refresh the cache with Ctrl+Shift+R when a new table is missing from completion.</li>
+  <li><strong>Options</strong> control the result grid, the sound on completion, and whether the designer may save changes that recreate a table.</li>
+</ul>
+<p>Security in the UI: server Security, then Logins, is the instance login. Each database has Security, then Users, which maps a login into that database, plus database roles. A login connects to the instance. A user is that login inside one database.</p>
+
+<h1>18. Stored procedure optimization</h1>
+<p>A procedure is fast when the statements inside it are fast and when the cached plan matches the parameter values you usually pass.</p>
+<ol>
+  <li><code>SET NOCOUNT ON</code> at the top, so a row-count message is not sent after every statement.</li>
+  <li>Write set-based SQL. A cursor or a <code>WHILE</code> over every row is the usual reason a procedure is slow.</li>
+  <li>Keep predicates SARGable. The column stands alone on one side of the comparison so an index can seek.</li>
+</ol>
+<pre>-- Seekable
+WHERE OrderDate &gt;= '2026-01-01'
+  AND OrderDate &lt;  '2026-02-01'
+
+-- Not seekable: a function wraps the column
+WHERE YEAR(OrderDate) = 2026
+WHERE CONVERT(date, CreatedAt) = '2026-09-01'</pre>
+<ol start="4">
+  <li>Cover the query. A nonclustered index whose keys match <code>WHERE</code> and <code>JOIN</code>, and whose <code>INCLUDE</code> list holds the selected columns, avoids key lookups.</li>
+  <li>Watch parameter sniffing. SQL Server compiles using the first parameter values it sees, then reuses that plan. A plan sniffed for a tiny customer can be a poor plan for a huge customer.</li>
+</ol>
+<pre>-- A local variable hides the parameter from the first sniff
+DECLARE @Id int = @CustomerId;
+SELECT Amount FROM dbo.Orders WHERE CustomerId = @Id;
+
+-- Recompile this statement on every execution
+SELECT Amount
+FROM dbo.Orders
+WHERE CustomerId = @CustomerId
+OPTION (RECOMPILE);</pre>
+<p><code>OPTION (RECOMPILE)</code> fits a statement whose best plan changes sharply with the parameter and that does not run thousands of times per second. <code>OPTION (OPTIMIZE FOR UNKNOWN)</code> asks for an average plan.</p>
+<ol start="6">
+  <li>Keep transactions short. Change the rows, commit, then do slow work such as email or file I/O outside the transaction.</li>
+  <li>Avoid <code>SELECT *</code>. It blocks covering indexes and breaks clients when a column is added.</li>
+  <li>Match data types. A <code>varchar</code> parameter compared with an <code>nvarchar</code> column can cause a scan. A scalar UDF in <code>WHERE</code> can force row-by-row execution.</li>
+  <li>Read the actual plan and <code>SET STATISTICS IO, TIME ON</code>. Logical reads tell you how much data you touched.</li>
+</ol>
+<pre>SET STATISTICS IO, TIME ON;
+EXEC dbo.usp_GetOrders @CustomerId = 42;</pre>
+
+<h1>19. Execution plan</h1>
+<p>The <strong>execution plan</strong> is the tree of operators the optimizer chose. Each operator has an estimated cost. The estimate stays a guess until you run the query. The <strong>actual plan</strong> adds real row counts.</p>
+<table>
+  <tr><th>Operator</th><th>Meaning</th></tr>
+  <tr><td>Index Seek</td><td>Walked the B-tree to the matching keys. This is what you want for a selective filter.</td></tr>
+  <tr><td>Index Scan or Clustered Index Scan</td><td>Read the index or the table. Reasonable when the query needs a large fraction of the rows.</td></tr>
+  <tr><td>Key Lookup</td><td>After a nonclustered seek, fetched extra columns from the clustered index. Many lookups mean you should INCLUDE those columns or select fewer of them.</td></tr>
+  <tr><td>Hash Match</td><td>Builds a hash table on one input and probes with the other. Fits large unsorted joins and aggregates.</td></tr>
+  <tr><td>Merge Join</td><td>Both inputs are sorted on the join key and walked together. Efficient when that order already exists.</td></tr>
+  <tr><td>Nested Loops</td><td>For each outer row, find matches on the inner side. Best when the outer side is small and the inner side has an index.</td></tr>
+  <tr><td>Sort</td><td>An explicit sort. Expensive when it spills to tempdb.</td></tr>
+  <tr><td>Parallelism</td><td>Work split across threads, then gathered.</td></tr>
+</table>
+<p>Plan warnings to take seriously: a missing-index suggestion (a hint, not an order), an implicit conversion, a spill to <code>tempdb</code>, and estimated rows far from actual rows. The last of those is stale statistics or a sniffed parameter.</p>
+<pre>UPDATE STATISTICS dbo.Orders WITH FULLSCAN;</pre>
+
+<h1>20. Linked server and linked list</h1>
+<p>A <strong>linked server</strong> is a named connection from this SQL Server instance to another data source: another SQL Server, Oracle, Excel, or an ODBC source. You query it with a four-part name: <code>server.database.schema.table</code>.</p>
+<pre>EXEC sp_addlinkedserver
+    @server = N'REPORTING',
+    @srvproduct = N'',
+    @provider = N'MSOLEDBSQL',
+    @datasrc = N'report-host';
+
+EXEC sp_addlinkedsrvlogin
+    @rmtsrvname = N'REPORTING',
+    @useself = N'False',
+    @locallogin = NULL,
+    @rmtuser = N'report_reader',
+    @rmtpassword = N'secret';
+
+SELECT OrderId, Amount
+FROM REPORTING.Sales.dbo.Orders
+WHERE OrderDate &gt;= '2026-01-01';</pre>
+<p><code>OPENQUERY</code> sends the SQL text to the remote engine so filtering happens there.</p>
+<pre>SELECT *
+FROM OPENQUERY(REPORTING,
+    'SELECT OrderId, Amount
+     FROM Sales.dbo.Orders
+     WHERE OrderDate &gt;= ''2026-01-01''');</pre>
+<p>A four-part query can pull a remote table locally and filter afterward. <code>OPENQUERY</code> keeps the filter on the remote server.</p>
+<p>A <strong>linked list</strong> is a programming structure: each node holds a value and a pointer to the next node. SQL tables are not linked lists. You model a chain with an adjacency list (<code>EmployeeId</code>, <code>ManagerId</code>) and walk it with a recursive common table expression.</p>
+
+<h1>21. Magic tables</h1>
+<p><code>inserted</code> and <code>deleted</code> exist inside a trigger. The <code>OUTPUT</code> clause of <code>INSERT</code>, <code>UPDATE</code>, and <code>DELETE</code> exposes the same row images under those names.</p>
+<table>
+  <tr><th>Statement</th><th>inserted</th><th>deleted</th></tr>
+  <tr><td>INSERT</td><td>The new rows</td><td>Empty</td></tr>
+  <tr><td>DELETE</td><td>Empty</td><td>The old rows</td></tr>
+  <tr><td>UPDATE</td><td>The new version</td><td>The old version</td></tr>
+</table>
+<p>They have the same columns as the base table, and they contain every row the statement affected. A trigger that assumes exactly one row is wrong under a multi-row <code>UPDATE</code>.</p>
+<pre>CREATE OR ALTER TRIGGER dbo.tr_BlockAmountDrop
+ON dbo.Orders
+AFTER UPDATE
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    IF EXISTS
+    (
+        SELECT 1
+        FROM inserted AS i
+        JOIN deleted AS d ON d.OrderId = i.OrderId
+        WHERE i.Amount &lt; d.Amount
+    )
+        THROW 50002, 'Amount cannot decrease.', 1;
+END;</pre>
+
+<h1>22. Replication</h1>
+<p><strong>Replication</strong> copies data and schema changes from a Publisher through a Distributor to one or more Subscribers.</p>
+<table>
+  <tr><th>Type</th><th>What moves</th><th>Typical use</th></tr>
+  <tr><td>Snapshot</td><td>A full refresh of the articles</td><td>Small tables, an occasional copy</td></tr>
+  <tr><td>Transactional</td><td>Each committed change, in order, near real time</td><td>A reporting copy or an integration feed</td></tr>
+  <tr><td>Peer-to-peer</td><td>Transactional, with more than one writable node</td><td>Scale-out writes. Conflicts are a design problem you own.</td></tr>
+  <tr><td>Merge</td><td>Changes from both sides, with conflict resolvers</td><td>Occasionally connected clients</td></tr>
+</table>
+<p>An <strong>article</strong> is one table, procedure, or view. A <strong>publication</strong> is the set of articles. The log reader agent reads the publisher’s transaction log. The distribution agent applies commands at the subscriber.</p>
+<p>Transactional replication is not a backup. The subscriber diverges if someone writes to it directly, and the distributor database needs its own maintenance. For high availability, availability groups or log shipping are the usual tools. Use replication when the subscriber should hold a subset of tables, a different set of indexes, or a filtered copy.</p>
+
+<h1>23. Database engines compared</h1>
+<table>
+  <tr><th>Engine</th><th>What it is</th><th>Strength</th><th>How you scale</th></tr>
+  <tr><td>SQL Server</td><td>Microsoft’s relational engine, including Linux builds. T-SQL, Agent, columnstore, replication, availability groups.</td><td>OLTP and mixed workloads, SSMS, Windows integration.</td><td>Bigger hardware, readable replicas. Sharding is an application design.</td></tr>
+  <tr><td>PostgreSQL</td><td>Open-source relational engine. Rich types, extensions such as PostGIS, strong standard SQL, MVCC.</td><td>Complex queries, extensibility, license cost.</td><td>Bigger hardware, streaming replicas. Citus and similar projects distribute it.</td></tr>
+  <tr><td>MySQL</td><td>Open-source relational engine. InnoDB is the storage engine that matters. Very common behind web applications.</td><td>Straightforward web OLTP and a large hosting ecosystem.</td><td>Read replicas. Sharding through the application or Vitess.</td></tr>
+  <tr><td>Azure SQL</td><td>Microsoft’s managed SQL Server: a single database, an elastic pool, or a managed instance. Application T-SQL is largely the same.</td><td>SQL Server without operating a VM. Backups, patching, and high availability are part of the service.</td><td>Service tier: vCores, serverless, or Hyperscale.</td></tr>
+  <tr><td>Snowflake</td><td>A cloud warehouse. Storage and compute are separate. It uses tables and ANSI-style SQL aimed at analytics.</td><td>Many teams sharing data, warehouses you can suspend, and time travel.</td><td>Change warehouse size, or run more warehouses at once.</td></tr>
+  <tr><td>Amazon Redshift</td><td>AWS columnar warehouse, historically based on PostgreSQL and ParAccel. Massively parallel across nodes.</td><td>Large analytical scans inside AWS.</td><td>Add nodes. RA3 separates storage. Concurrency scaling covers bursts.</td></tr>
+  <tr><td>Azure Synapse</td><td>Azure’s analytics platform. Dedicated SQL pools are the distributed warehouse (formerly Azure SQL Data Warehouse). Serverless SQL queries files in the data lake. Spark and pipelines sit beside the SQL.</td><td>Lakehouse-style analytics on Azure, mixing SQL and Spark.</td><td>Scale dedicated-pool DWUs, or pay per query on serverless SQL.</td></tr>
+</table>
+<p>Application transactions — orders, accounts, locking, stored procedures — belong on SQL Server, Azure SQL, PostgreSQL, or MySQL. If you already write T-SQL and want it managed, use Azure SQL. Analysts scanning billions of rows, loading files, and serving many dashboards belong on Snowflake, Redshift, or Synapse. Those three warehouses are a weak fit for thousands of single-row OLTP updates per second. SQL Server and PostgreSQL are a weak fit as the only engine for a petabyte data lake scanned by dozens of BI tools.</p>
+<p>Dialect differences that show up immediately:</p>
+<ul>
+  <li>Limiting rows: SQL Server uses <code>OFFSET/FETCH</code> or <code>TOP</code>. PostgreSQL and MySQL use <code>LIMIT</code>.</li>
+  <li>Auto-number: <code>IDENTITY</code> or a sequence in SQL Server; <code>GENERATED AS IDENTITY</code> in PostgreSQL; <code>AUTO_INCREMENT</code> in MySQL.</li>
+  <li>Strings: <code>nvarchar</code> and the <code>N</code> prefix are a SQL Server habit. PostgreSQL <code>varchar</code> is already Unicode.</li>
+  <li>Upsert: <code>MERGE</code> in SQL Server; <code>INSERT ... ON CONFLICT</code> in PostgreSQL; <code>INSERT ... ON DUPLICATE KEY UPDATE</code> in MySQL.</li>
+</ul>
+
+<h1>24. DBMS and RDBMS</h1>
+<p>A <strong>DBMS</strong> (database management system) is any engine that stores data and lets you define, query, and protect it. That includes relational engines, document stores, key-value stores, and graph stores.</p>
+<p>An <strong>RDBMS</strong> is a DBMS whose model is relations: tables of rows and columns, keys, and a query language based on relational algebra, which is what SQL implements. SQL Server, PostgreSQL, MySQL, and Azure SQL are RDBMSs. Snowflake, Redshift, and Synapse dedicated SQL pools use the same table model and give up some OLTP behavior, such as rich constraint enforcement and high-rate single-row updates.</p>
+
+<h1>25. Codd’s rules and Boyce-Codd</h1>
+<p><strong>E. F. Codd’s rules</strong>, numbered 0 through 12, describe what it means for a product to be relational. No major product scores a perfect 12. They remain the definition people mean by a relational system.</p>
+<ol start="0">
+  <li>The system manages data through its relational capabilities.</li>
+  <li>All information is represented as values in tables.</li>
+  <li>Every value is addressable by table name, primary key, and column name.</li>
+  <li>Nulls are systematic, and they are distinct from an empty string or zero.</li>
+  <li>The schema itself lives in tables (the catalog) and is queried with the same language.</li>
+  <li>One language covers definition, queries, authorization, integrity, and transactions.</li>
+  <li>Views that are theoretically updatable can be updated through the system.</li>
+  <li>Insert, update, and delete work on sets, not only on one row at a time.</li>
+  <li>Application programs keep working when physical storage changes (files, indexes).</li>
+  <li>Application programs keep working when tables are split or joined, provided views preserve the information.</li>
+  <li>Integrity rules live in the catalog, not only in application code.</li>
+  <li>Distributing data across nodes does not change how the application addresses it.</li>
+  <li>A lower-level interface is not allowed to bypass the integrity rules.</li>
+</ol>
+<p><strong>Boyce-Codd normal form (BCNF)</strong> is a table-design rule, stricter than third normal form. A table is in BCNF when every determinant is a candidate key. If column A determines column B, then A must be a key. This removes a class of update anomalies.</p>
+<p>A classic table that can be in third normal form and still violate BCNF is <code>StudentSubjectTeacher (Student, Subject, Teacher)</code> where each subject has many students, each teacher teaches one subject, and each subject is taught by one teacher in this model. <code>Teacher</code> determines <code>Subject</code>, and <code>Teacher</code> is not a candidate key. Split it into <code>TeacherSubject (Teacher, Subject)</code> and <code>StudentTeacher (Student, Teacher)</code>.</p>
+
+<h1>26. ACID</h1>
+<p><strong>ACID</strong> is the promise of a transaction.</p>
+<table>
+  <tr><th>Property</th><th>Meaning</th><th>In SQL Server</th></tr>
+  <tr><td>Atomicity</td><td>Every statement in the transaction commits, or none of them remain.</td><td>BEGIN TRAN, COMMIT, and ROLLBACK. The log makes rollback possible.</td></tr>
+  <tr><td>Consistency</td><td>A committed transaction leaves the database satisfying its constraints.</td><td>PRIMARY KEY, FOREIGN KEY, CHECK, UNIQUE. Triggers can add further rules.</td></tr>
+  <tr><td>Isolation</td><td>Concurrent transactions do not observe each other’s half-finished work, to the degree the isolation level promises.</td><td>READ COMMITTED is the default. Also READ UNCOMMITTED, REPEATABLE READ, SNAPSHOT, and SERIALIZABLE.</td></tr>
+  <tr><td>Durability</td><td>After commit, the change survives a crash.</td><td>Commit waits until the log record is written to the LDF.</td></tr>
+</table>
+<pre>SET TRANSACTION ISOLATION LEVEL SNAPSHOT;
+BEGIN TRAN;
+UPDATE dbo.Accounts SET Balance = Balance - 100 WHERE AccountId = 1;
+UPDATE dbo.Accounts SET Balance = Balance + 100 WHERE AccountId = 2;
+COMMIT;</pre>
+<p><code>SNAPSHOT</code> requires <code>ALLOW_SNAPSHOT_ISOLATION</code> on the database. <code>SNAPSHOT</code> and <code>READ COMMITTED SNAPSHOT</code> keep row versions in <code>tempdb</code> so a reader sees the last committed version and does not wait on the writer’s lock.</p>
+
+<h1>27. View and materialized view</h1>
+<p>A <strong>view</strong> is a stored <code>SELECT</code>. Querying the view runs that <code>SELECT</code>. The view does not store rows unless you index it.</p>
+<pre>CREATE OR ALTER VIEW dbo.v_OpenOrders
+AS
+SELECT o.OrderId, c.CustomerName, o.OrderDate, o.Amount
+FROM dbo.Orders AS o
+JOIN dbo.Customers AS c ON c.CustomerId = o.CustomerId
+WHERE o.Status = 'Open';</pre>
+<p>A simple view on one table, with the key preserved and no aggregates, is updatable. A view with joins or <code>GROUP BY</code> generally is not, unless you write an <code>INSTEAD OF</code> trigger.</p>
+<p>A <strong>materialized view</strong> stores the query result and refreshes it. PostgreSQL has <code>CREATE MATERIALIZED VIEW</code> and <code>REFRESH MATERIALIZED VIEW</code>. Snowflake maintains materialized views as data changes.</p>
+<p>SQL Server’s equivalent is an <strong>indexed view</strong>: a view with a unique clustered index. The index stores the joined or aggregated rows, and the engine maintains it when the base tables change. Requirements are strict: <code>SCHEMABINDING</code>, deterministic functions, <code>COUNT_BIG(*)</code> when you aggregate, and session options such as <code>ANSI_NULLS ON</code> and <code>QUOTED_IDENTIFIER ON</code>.</p>
+<pre>CREATE OR ALTER VIEW dbo.v_CustomerTotals
+WITH SCHEMABINDING
+AS
+SELECT CustomerId,
+       COUNT_BIG(*) AS Cnt,
+       SUM(Amount) AS Total
+FROM dbo.Orders
+GROUP BY CustomerId;
+GO
+
+CREATE UNIQUE CLUSTERED INDEX IX_v_CustomerTotals
+ON dbo.v_CustomerTotals (CustomerId);</pre>
+<p>Enterprise Edition can use this index even when the query never names the view. On Standard Edition you often query the view directly and add <code>WITH (NOEXPAND)</code>.</p>
+
+<h1>28. Local variables and global variables</h1>
+<p><strong>Local variables</strong> belong to the batch or procedure. You declare them. They disappear when that batch ends.</p>
+<pre>DECLARE @Name nvarchar(100);
+DECLARE @Count int = 0;
+
+SET @Name = N'Ada';
+SELECT @Count = COUNT(*) FROM dbo.Orders;</pre>
+<p><code>SELECT @Count = COUNT(*)</code> is a normal assignment. <code>SELECT @x = Col FROM Table</code> against many rows leaves <code>@x</code> holding one of those values, and which one is not defined. Use an aggregate or <code>TOP (1)</code> with <code>ORDER BY</code> when you mean one specific value.</p>
+<p>What people call <strong>global variables</strong> in SQL Server are system functions spelled with <code>@@</code>. You do not create them. They report session or server state.</p>
+<table>
+  <tr><th>Function</th><th>Reports</th></tr>
+  <tr><td>@@VERSION</td><td>The build of this instance</td></tr>
+  <tr><td>@@SERVERNAME</td><td>The server name</td></tr>
+  <tr><td>@@SPID</td><td>This session id</td></tr>
+  <tr><td>@@ROWCOUNT</td><td>Rows affected by the immediately previous statement</td></tr>
+  <tr><td>@@ERROR</td><td>Error number of the previous statement, or 0. Prefer TRY/CATCH and ERROR_NUMBER().</td></tr>
+  <tr><td>@@IDENTITY</td><td>Last identity value generated on this session, by any table. Prefer SCOPE_IDENTITY() for your own statement’s scope.</td></tr>
+  <tr><td>@@TRANCOUNT</td><td>How many transactions are open on this session</td></tr>
+</table>
+<pre>UPDATE dbo.Orders SET Status = 'Shipped' WHERE OrderId = 10;
+SELECT @@ROWCOUNT AS UpdatedRows;</pre>
+<p>There is no user-defined variable shared across sessions. To share a value, write a one-row table. <code>sp_set_session_context</code> stores a value for the current session only.</p>
+<pre>EXEC sp_set_session_context @key = N'TenantId', @value = 7;
+SELECT SESSION_CONTEXT(N'TenantId');</pre>
+
+<h1>29. Joins, join hints, and physical joins</h1>
+<h2>Logical joins</h2>
+<pre>-- Inner: only rows that match on both sides
+SELECT o.OrderId, c.CustomerName
+FROM dbo.Orders AS o
+INNER JOIN dbo.Customers AS c
+    ON c.CustomerId = o.CustomerId;
+
+-- Left: every order; customer columns are NULL when unmatched
+SELECT o.OrderId, c.CustomerName
+FROM dbo.Orders AS o
+LEFT JOIN dbo.Customers AS c
+    ON c.CustomerId = o.CustomerId;
+
+-- Cross: every row of A paired with every row of B
+SELECT d.DayDate, s.ShiftName
+FROM dbo.Calendar AS d
+CROSS JOIN dbo.Shifts AS s;
+
+-- Self join: the table matched to itself, always with two aliases
+SELECT e.EmployeeName AS Employee, m.EmployeeName AS Manager
+FROM dbo.Employees AS e
+LEFT JOIN dbo.Employees AS m
+    ON m.EmployeeId = e.ManagerId;</pre>
+<p>A cross join of 10,000 rows by 10,000 rows produces 100 million rows. Use it for small combinations such as dates times shifts. <code>FULL OUTER JOIN</code> keeps unmatched rows from both sides. <code>RIGHT JOIN</code> is a left join written the other way around. Most teams write <code>LEFT JOIN</code> so the preserved table is always the first one.</p>
+
+<h2>Physical joins</h2>
+<ul>
+  <li><strong>Nested loops:</strong> for each outer row, find inner matches. Fast when one side is small and the other is indexed.</li>
+  <li><strong>Hash:</strong> hash the build input, probe with the other. Fast for large inputs that are not already ordered. Needs memory.</li>
+  <li><strong>Merge:</strong> both sides sorted on the join key, then advanced together like two sorted lists. Fast when indexes already provide that order.</li>
+</ul>
+
+<h2>Join hints</h2>
+<p>A hint forces the algorithm. Use one after you have measured a bad plan and confirmed the forced shape stays stable.</p>
+<pre>SELECT o.OrderId, c.CustomerName
+FROM dbo.Orders AS o
+INNER HASH JOIN dbo.Customers AS c
+    ON c.CustomerId = o.CustomerId;
+
+SELECT o.OrderId, c.CustomerName
+FROM dbo.Orders AS o
+INNER LOOP JOIN dbo.Customers AS c
+    ON c.CustomerId = o.CustomerId;
+
+SELECT o.OrderId, c.CustomerName
+FROM dbo.Orders AS o
+INNER MERGE JOIN dbo.Customers AS c
+    ON c.CustomerId = o.CustomerId;</pre>
+<p>Query-wide forms are <code>OPTION (HASH JOIN)</code>, <code>OPTION (LOOP JOIN)</code>, <code>OPTION (MERGE JOIN)</code>, and <code>OPTION (FORCE ORDER)</code>. A supporting index is the better long-term fix when one exists. Hints have to be revisited when data volumes change.</p>
+
+<h1>30. MERGE</h1>
+<p><code>MERGE</code> inserts, updates, and deletes in one statement by comparing a target table with a source.</p>
+<pre>MERGE dbo.Customers AS t
+USING dbo.StagingCustomers AS s
+    ON t.Email = s.Email
+WHEN MATCHED AND t.CustomerName &lt;&gt; s.CustomerName THEN
+    UPDATE SET CustomerName = s.CustomerName
+WHEN NOT MATCHED BY TARGET THEN
+    INSERT (CustomerName, Email)
+    VALUES (s.CustomerName, s.Email)
+WHEN NOT MATCHED BY SOURCE THEN
+    DELETE;</pre>
+<p>The source can be a table, a view, or a derived table from <code>VALUES</code> or a CTE. Put an extra predicate on <code>WHEN MATCHED</code> so unchanged rows are not rewritten.</p>
+<ul>
+  <li>The join must identify at most one source row per target row. SQL Server raises an error if one target row matches several source rows.</li>
+  <li>Under concurrency, <code>MERGE</code> has known race conditions. A staged batch load is the comfortable use. A single-row upsert is often written as an explicit transaction that takes <code>UPDLOCK</code> and <code>HOLDLOCK</code>.</li>
+  <li><code>OUTPUT $action, inserted.*, deleted.*</code> shows what the statement did to each row.</li>
+</ul>
+
+<h1>31. Common table expression</h1>
+<p>A <strong>CTE</strong> is a named subquery that lives for one statement. It makes the query easier to read. It is not a temp table, and you cannot index it by itself. SQL Server may spool the result.</p>
+<pre>WITH monthly AS
+(
+    SELECT CustomerId, SUM(Amount) AS Total
+    FROM dbo.Orders
+    WHERE OrderDate &gt;= '2026-01-01'
+    GROUP BY CustomerId
+)
+SELECT c.CustomerName, m.Total
+FROM monthly AS m
+JOIN dbo.Customers AS c ON c.CustomerId = m.CustomerId
+WHERE m.Total &gt; 1000;</pre>
+<p>Several CTEs can share one <code>WITH</code>, separated by commas. A recursive CTE walks a tree or a graph that is a tree in practice.</p>
+<pre>WITH org AS
+(
+    SELECT EmployeeId, ManagerId, EmployeeName, 0 AS Lvl
+    FROM dbo.Employees
+    WHERE ManagerId IS NULL
+
+    UNION ALL
+
+    SELECT e.EmployeeId, e.ManagerId, e.EmployeeName, o.Lvl + 1
+    FROM dbo.Employees AS e
+    JOIN org AS o ON e.ManagerId = o.EmployeeId
+)
+SELECT EmployeeId, EmployeeName, Lvl
+FROM org
+OPTION (MAXRECURSION 100);</pre>
+<p>The anchor member runs once. The recursive member runs until it returns no rows, or until <code>MAXRECURSION</code> stops it. The default limit is 100.</p>
+
+<h1>32. BULK INSERT</h1>
+<p><code>BULK INSERT</code> loads a file that the SQL Server service account can read. The path is on the server, or on a share that account can open. It is not a path on your laptop unless that path is visible to the service.</p>
+<pre>BULK INSERT dbo.StagingOrders
+FROM N'D:\import\orders.csv'
+WITH
+(
+    FORMAT = 'CSV',
+    FIRSTROW = 2,
+    FIELDTERMINATOR = ',',
+    ROWTERMINATOR = '0x0a',
+    TABLOCK,
+    CODEPAGE = '65001'   -- UTF-8
+);</pre>
+<p><code>TABLOCK</code>, a heap or an empty clustered table, and the simple or bulk-logged recovery model can minimally log the load. Constraints and indexes still apply unless you disable them on purpose and validate the data afterward.</p>
+<p>Other loaders: the <code>bcp</code> and <code>sqlcmd</code> command-line tools; <code>OPENROWSET(BULK ...)</code> when the file should appear as a rowset inside <code>INSERT...SELECT</code>; SSIS or Azure Data Factory when the pipeline needs conversions, rejects, and a schedule.</p>
+<pre>INSERT INTO dbo.StagingOrders (OrderId, Amount)
+SELECT OrderId, Amount
+FROM OPENROWSET
+(
+    BULK 'D:\import\orders.csv',
+    FORMATFILE = 'D:\import\orders.xml'
+) AS r;</pre>
+
+<h1>How the pieces fit</h1>
+<p>A request arrives through JDBC or through SSMS. It runs a procedure. The procedure uses local variables, maybe a CTE or a <code>#temp</code> table, joins with a seek on a nonclustered index, and writes rows into the MDF or NDF while the change is hardened in the LDF. A trigger sees <code>inserted</code> and <code>deleted</code> and writes an audit row. An Agent job later archives old rows. Log shipping or replication carries the log or the articles to another server. An analytical copy may sit in a columnstore index, an indexed view, or an entirely different engine such as Synapse or Snowflake.</p>
+<p>The highest-leverage next study set is execution plans, index design (the clustered key plus covering nonclustered indexes), and parameter sniffing. Those three explain most cases of a procedure that is slow.</p>
+
+</body>
+</html>
